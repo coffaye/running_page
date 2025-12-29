@@ -50,19 +50,19 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* const nike = 'rgb(224,237,94)'; */
-    --color-brand: #e0ed5e;
-    --color-secondary: #ccd94a;
+    --color-brand: #FF69B4;
+    --color-secondary: #FF1493;
     --color-bg: var(--color-neutral-900);
     --color-tx: var(--color-brand);
-    --color-hr: var(--color-red-500);
+    --color-hr: #FFFF00;
     --color-selected: var(--color-brand);
     --color-run-date: var(--color-neutral-300);
     --color-run-table-thead: var(--color-zinc-300);
     --color-run-row-hover-background: var(--color-neutral-800);
     --color-activity-card: var(--color-neutral-700);
     --svg-color-active-cell: #4dd2ff;
-    --svg-special-color: #f7d02c;
-    --svg-special-color2: #f56c6c;
+    --svg-special-color: #FF69B4;
+    --svg-special-color2: #FFFF00;
     --font-sans: 'IBM Plex Sans', sans-serif;
     --font-mono: 'IBM Plex Mono', monospace;
   }
