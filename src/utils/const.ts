@@ -166,7 +166,7 @@ export {
   LOADING_TEXT,
 };
 
-const nike = 'rgb(224,237,94)'; // if you want to change the main color, modify this value in src/styles/variables.scss
+const nike = 'rgb(255, 105, 180)'; // if you want to change the main color, modify this value in src/styles/variables.scss
 const dark_vanilla = 'rgb(228,212,220)';
 
 // If your map has an offset please change this line
@@ -182,7 +182,7 @@ export const RUN_COLOR_DARK = MAIN_COLOR;
 
 // Single run animation colors
 export const SINGLE_RUN_COLOR_LIGHT = '#52c41a'; // Green for light theme
-export const SINGLE_RUN_COLOR_DARK = '#ff4d4f'; // Red for dark theme
+export const SINGLE_RUN_COLOR_DARK = '#FFFF00'; // Red for dark theme
 
 // Helper function to get theme-aware RUN_COLOR
 export const getRuntimeRunColor = (): string => {
