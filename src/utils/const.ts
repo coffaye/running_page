@@ -166,7 +166,7 @@ export {
   LOADING_TEXT,
 };
 
-const nike = 'rgb(255, 105, 180)'; // if you want to change the main color, modify this value in src/styles/variables.scss
+const nike = 'rgb(255,105,180)'; // if you want to change the main color, modify this value in src/styles/variables.scss
 const dark_vanilla = 'rgb(228,212,220)';
 
 // If your map has an offset please change this line
