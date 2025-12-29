@@ -94,7 +94,7 @@
   --color-secondary: #ff1493;
   --color-bg: var(--color-neutral-900);
   --color-tx: var(--color-brand);
-  --color-hr: var(--color-red-500);
+  --color-hr: #ffff00;
   --color-selected: var(--color-brand);
   --color-run-date: var(--color-neutral-300);
   --color-run-table-thead: var(--color-zinc-300);
