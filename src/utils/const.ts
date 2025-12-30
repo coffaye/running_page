@@ -182,7 +182,7 @@ export const RUN_COLOR_DARK = MAIN_COLOR;
 
 // Single run animation colors
 export const SINGLE_RUN_COLOR_LIGHT = '#52c41a'; // Green for light theme
-export const SINGLE_RUN_COLOR_DARK = '#ffff00'; // Red for dark theme
+export const SINGLE_RUN_COLOR_DARK = '#00ffff'; // Red for dark theme
 
 // Helper function to get theme-aware RUN_COLOR
 export const getRuntimeRunColor = (): string => {
