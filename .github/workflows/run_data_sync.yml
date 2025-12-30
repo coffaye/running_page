@@ -233,7 +233,7 @@ jobs:
       - name: Make year summary
         if: env.GENERATE_MONTH_OF_LIFE == 'true'
         run: |
-          python run_page/gen_svg.py --from-db --type year_summary --output assets/year_summary.svg --athlete "${{ env.ATHLETE }}"
+          python run_page/gen_svg.py --from-db --type year_summary --output assets/year_summary.svg --athlete "${{ env.ATHLETE }}" --special-color "#ff69b4" --track-color "#00ffff" --special-color2 "#ff1493"
 
       - name: Save data to parqent
         if: env.SAVE_TO_PARQENT == 'true'
