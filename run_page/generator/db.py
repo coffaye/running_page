@@ -81,7 +81,7 @@ class Activity(Base):
         return out
 
 
-def update_or_create_activity(session, run_activity):
+def update_or_create_activity(session, run_activity, reverse_geocode=True):
     created = False
     try:
         activity = (
@@ -106,7 +106,9 @@ def update_or_create_activity(session, run_activity):
             start_point = run_activity.start_latlng
             location_country = getattr(run_activity, "location_country", "")
             # or China for #176 to fix
-            if not location_country and start_point or location_country == "China":
+            if reverse_geocode and (
+                (not location_country and start_point) or location_country == "China"
+            ):
                 try:
                     location_country = str(
                         g.reverse(

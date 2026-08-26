@@ -24,6 +24,7 @@ COROS_TYPE_DICT = {
 
 
 TIME_OUT = httpx.Timeout(240.0, connect=360.0)
+DOWNLOAD_RETRIES = 3
 
 
 class Coros:
@@ -105,36 +106,44 @@ class Coros:
             f"{COROS_URL_DICT.get('DOWNLOAD_URL')}?labelId={label_id}&sportType={sport_type}"
             f"&fileType={COROS_TYPE_DICT[file_type]}"
         )
-        file_url = None
-        fname = ""
-        file_path = ""
-        try:
-            response = await self.req.post(download_url)
-            resp_json = response.json()
-            file_url = resp_json.get("data", {}).get("fileUrl")
-            if not file_url:
-                print(f"No file URL found for label_id {label_id}")
-                return None, None
-
-            fname = os.path.basename(file_url)
-            file_path = os.path.join(download_folder, fname)
-
-            async with self.req.stream("GET", file_url) as response:
+        for attempt in range(1, DOWNLOAD_RETRIES + 1):
+            file_url = None
+            fname = ""
+            file_path = ""
+            try:
+                response = await self.req.post(download_url)
                 response.raise_for_status()
-                async with aiofiles.open(file_path, "wb") as f:
-                    async for chunk in response.aiter_bytes():
-                        await f.write(chunk)
-            return label_id, fname
-        except httpx.HTTPStatusError as exc:
-            print(
-                f"Failed to download {file_url} with status code {response.status_code}: {exc}"
-            )
-        except Exception as exc:
-            print(f"Error occurred while downloading {file_url}: {exc}")
-        if file_path and os.path.exists(file_path):
-            print(f"Delete the corrupted fit file: {fname}")
-            os.remove(file_path)
+                resp_json = response.json()
+                file_url = resp_json.get("data", {}).get("fileUrl")
+                if not file_url:
+                    print(f"No file URL found for label_id {label_id}")
+                    return None, None
 
+                fname = os.path.basename(file_url)
+                file_path = os.path.join(download_folder, fname)
+
+                async with self.req.stream("GET", file_url) as response:
+                    response.raise_for_status()
+                    async with aiofiles.open(file_path, "wb") as f:
+                        async for chunk in response.aiter_bytes():
+                            await f.write(chunk)
+                return label_id, fname
+            except httpx.HTTPStatusError as exc:
+                status_code = exc.response.status_code if exc.response else "unknown"
+                print(
+                    f"Failed to download {file_url} (attempt {attempt}/{DOWNLOAD_RETRIES}) "
+                    f"with status code {status_code}: {exc}"
+                )
+            except Exception as exc:
+                print(
+                    f"Error occurred while downloading {file_url} "
+                    f"(attempt {attempt}/{DOWNLOAD_RETRIES}): {exc}"
+                )
+            if file_path and os.path.exists(file_path):
+                print(f"Delete the corrupted fit file: {fname}")
+                os.remove(file_path)
+            if attempt < DOWNLOAD_RETRIES:
+                await asyncio.sleep(attempt * 2)
         return None, None
 
 
@@ -168,7 +177,11 @@ async def download_and_generate(account, password, only_run, file_type):
     )
     print(f"Download finished. Elapsed {time.time()-start_time} seconds")
     await coros.req.aclose()
-    make_activities_file(SQL_FILE, folder, JSON_FILE, file_type)
+    # COROS FIT files do not include a location country. Avoid one serial
+    # reverse-geocoding request per new activity during the batch import.
+    make_activities_file(
+        SQL_FILE, folder, JSON_FILE, file_type, reverse_geocode=False
+    )
 
 
 async def gather_with_concurrency(n, tasks):

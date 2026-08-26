@@ -83,7 +83,13 @@ class Generator:
             sys.stdout.flush()
         self.session.commit()
 
-    def sync_from_data_dir(self, data_dir, file_suffix="gpx", activity_title_dict={}):
+    def sync_from_data_dir(
+        self,
+        data_dir,
+        file_suffix="gpx",
+        activity_title_dict={},
+        reverse_geocode=True,
+    ):
         loader = track_loader.TrackLoader()
         tracks = loader.load_tracks(
             data_dir, file_suffix=file_suffix, activity_title_dict=activity_title_dict
@@ -97,7 +103,9 @@ class Generator:
 
         for t in tracks:
             created = update_or_create_activity(
-                self.session, t.to_namedtuple(run_from=file_suffix)
+                self.session,
+                t.to_namedtuple(run_from=file_suffix),
+                reverse_geocode=reverse_geocode,
             )
             if created:
                 sys.stdout.write("+")
