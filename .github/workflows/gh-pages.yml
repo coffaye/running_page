@@ -1,5 +1,7 @@
 name: Publish GitHub Pages
 
+run-name: Publish GitHub Pages · ${{ inputs.report_dispatch_id || github.run_id }}
+
 # Controls when the action will run.
 on:
   workflow_dispatch:
@@ -12,6 +14,10 @@ on:
         required: true
         type: string
         default: track_data
+      report_dispatch_id:
+        required: false
+        type: string
+        default: ''
   workflow_call:
     inputs:
       save_data_in_github_cache:
@@ -22,6 +28,10 @@ on:
         required: true
         type: string
         default: track_data
+      report_dispatch_id:
+        required: false
+        type: string
+        default: ''
 
 # Allow one concurrent deployment
 concurrency:
