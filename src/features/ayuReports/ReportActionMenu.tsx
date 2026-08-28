@@ -47,10 +47,6 @@ const ReportActionMenu = ({ runId, report }: ReportActionMenuProps) => {
   const menuId = `report-menu-${useId().replace(/:/g, '')}`;
   const triggerUrl = getReportTriggerUrl(runId);
 
-  // No report and no configured trigger means there is no safe action to show.
-  // In particular, do not render a dead link or a button that appears to work.
-  if (!report && !triggerUrl) return null;
-
   const close = useCallback(() => setOpen(false), []);
   const toggle = useCallback(() => {
     if (!buttonRef.current) return;
@@ -90,6 +86,10 @@ const ReportActionMenu = ({ runId, report }: ReportActionMenuProps) => {
       window.removeEventListener('scroll', handleViewportChange, true);
     };
   }, [close, open]);
+
+  // No report and no configured trigger means there is no safe action to show.
+  // In particular, do not render a dead link or a button that appears to work.
+  if (!report && !triggerUrl) return null;
 
   const stopRowEvent = (event: SyntheticEvent) => event.stopPropagation();
   const menu =
