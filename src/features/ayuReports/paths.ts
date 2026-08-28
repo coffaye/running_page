@@ -1,5 +1,7 @@
 import type { ReportEntry } from './types.ts';
 
+let missingTriggerWarningShown = false;
+
 const normalizeBaseUrl = (baseUrl: string): string => {
   const normalized = baseUrl.trim() || '/';
   return `/${normalized.replace(/^\/+|\/+$/g, '')}/`.replace(/^\/\/$/, '/');
@@ -36,7 +38,16 @@ export const getReportTriggerUrl = (
   triggerBaseUrl: string = import.meta.env.VITE_AYU_REPORT_TRIGGER_URL
 ): string | null => {
   const base = triggerBaseUrl?.trim();
-  if (!base) return null;
+  if (!base) {
+    const env = (import.meta as ImportMeta & { env?: { DEV?: boolean } }).env;
+    if (env?.DEV && !missingTriggerWarningShown) {
+      missingTriggerWarningShown = true;
+      console.warn(
+        '[Ayu Running] VITE_AYU_REPORT_TRIGGER_URL is not configured; generation actions are hidden.'
+      );
+    }
+    return null;
+  }
   try {
     const url = new URL(base);
     url.searchParams.set('run_id', runId);
