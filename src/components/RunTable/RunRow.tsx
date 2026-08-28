@@ -1,3 +1,4 @@
+import type { SyntheticEvent } from 'react';
 import {
   formatPace,
   titleForRun,
@@ -6,6 +7,8 @@ import {
   RunIds,
 } from '@/utils/utils';
 import { SHOW_ELEVATION_GAIN } from '@/utils/const';
+import ReportActionMenu from '@/features/ayuReports/ReportActionMenu';
+import type { ReportEntry } from '@/features/ayuReports/types';
 import styles from './style.module.css';
 
 interface IRunRowProperties {
@@ -14,6 +17,7 @@ interface IRunRowProperties {
   run: Activity;
   runIndex: number;
   setRunIndex: (_ndex: number) => void;
+  report?: ReportEntry;
 }
 
 const RunRow = ({
@@ -22,6 +26,7 @@ const RunRow = ({
   run,
   runIndex,
   setRunIndex,
+  report,
 }: IRunRowProperties) => {
   const distance = (run.distance / 1000.0).toFixed(2);
   const paceParts = run.average_speed ? formatPace(run.average_speed) : null;
@@ -36,11 +41,11 @@ const RunRow = ({
     setRunIndex(elementIndex);
     locateActivity([run.run_id]);
   };
+  const stopRowEvent = (event: SyntheticEvent) => event.stopPropagation();
 
   return (
     <tr
       className={`${styles.runRow} ${runIndex === elementIndex ? styles.selected : ''}`}
-      key={run.start_date_local}
       onClick={handleClick}
     >
       <td>{titleForRun(run)}</td>
@@ -50,6 +55,14 @@ const RunRow = ({
       <td>{heartRate && heartRate.toFixed(0)}</td>
       <td>{runTime}</td>
       <td className={styles.runDate}>{run.start_date_local}</td>
+      <td
+        className={styles.reportActionCell}
+        onPointerDown={stopRowEvent}
+        onClick={stopRowEvent}
+        onKeyDown={stopRowEvent}
+      >
+        <ReportActionMenu runId={String(run.run_id)} report={report} />
+      </td>
     </tr>
   );
 };

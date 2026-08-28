@@ -1,0 +1,49 @@
+.reportActionButton {
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--color-brand);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.reportActionButton:hover,
+.reportActionButton:focus-visible {
+  background: color-mix(in srgb, var(--color-brand) 16%, transparent);
+  outline: none;
+}
+
+.reportMenu {
+  position: fixed;
+  z-index: 1000;
+  min-width: 9rem;
+  padding: 0.25rem;
+  border: 1px solid var(--color-brand);
+  border-radius: 0.35rem;
+  background: var(--color-background);
+  box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 22%);
+}
+
+.reportMenu a {
+  display: block;
+  padding: 0.55rem 0.7rem;
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.reportMenu a:hover,
+.reportMenu a:focus-visible {
+  background: color-mix(in srgb, var(--color-brand) 16%, transparent);
+  color: var(--color-brand);
+  outline: none;
+}

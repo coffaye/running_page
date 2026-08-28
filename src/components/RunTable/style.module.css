@@ -25,6 +25,14 @@
   .runTable td:last-child {
     min-width: 80px;
   }
+
+  .runTable th.reportActionHeader,
+  .runTable td.reportActionCell {
+    min-width: 2.75rem !important;
+    width: 2.75rem;
+    padding-left: 0.1rem !important;
+    padding-right: 0.1rem !important;
+  }
 }
 
 .runTable {
@@ -47,7 +55,7 @@
       text-align: left;
     }
 
-    :is(th):last-child {
+    :is(th).runDate {
       text-align: right;
     }
   }
@@ -60,7 +68,7 @@
     text-align: left;
   }
 
-  :is(th, td):last-child {
+  :is(th, td).runDate {
     text-align: right;
   }
 }
@@ -77,7 +85,7 @@
     text-align: left;
   }
 
-  :is(td):last-child {
+  :is(td).runDate {
     text-align: right;
   }
 
@@ -97,4 +105,16 @@
 
 .runDate {
   color: var(--color-run-date);
+  min-width: 10rem;
+  text-align: right !important;
+}
+
+.reportActionHeader,
+.reportActionCell {
+  width: 2.75rem;
+  min-width: 2.75rem;
+  max-width: 2.75rem;
+  padding-left: 0.15rem !important;
+  padding-right: 0.15rem !important;
+  text-align: center !important;
 }

@@ -10,6 +10,7 @@ import { SHOW_ELEVATION_GAIN } from '@/utils/const';
 
 import RunRow from './RunRow';
 import styles from './style.module.css';
+import { useReportManifest } from '@/features/ayuReports/useReportManifest';
 
 interface IRunTableProperties {
   runs: Activity[];
@@ -29,6 +30,7 @@ const RunTable = ({
   setRunIndex,
 }: IRunTableProperties) => {
   const [sortFuncInfo, setSortFuncInfo] = useState('');
+  const { reports } = useReportManifest();
 
   // Memoize sort functions to prevent recreating them on every render
   const sortFunctions = useMemo(() => {
@@ -96,17 +98,19 @@ const RunTable = ({
                 {k}
               </th>
             ))}
+            <th className={styles.reportActionHeader} aria-hidden="true" />
           </tr>
         </thead>
         <tbody>
           {runs.map((run, elementIndex) => (
             <RunRow
-              key={run.run_id}
+              key={String(run.run_id)}
               elementIndex={elementIndex}
               locateActivity={locateActivity}
               run={run}
               runIndex={runIndex}
               setRunIndex={setRunIndex}
+              report={reports.get(String(run.run_id))}
             />
           ))}
         </tbody>
