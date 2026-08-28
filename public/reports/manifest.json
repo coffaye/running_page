@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-28T06:41:47Z",
+  "generatedAt": "2026-08-28T08:00:20Z",
   "reports": {
     "1787696516000": {
       "runId": "1787696516000",
       "localDate": "2026-08-26",
       "url": "reports/daily/2026-08-26/1787696516000.html",
-      "generatedAt": "2026-08-28T04:39:13Z",
+      "generatedAt": "2026-08-28T08:00:19Z",
       "hubVersion": "0.2.0",
       "engineVersion": "0.2.0",
-      "engineCommit": "b23f8c229847447783d21186f661b2ce0b9d9fe4",
-      "promptVersion": "ayu-daily-v5",
+      "engineCommit": "a8686ad35b1226d5569eab28543ad4ab25183274",
+      "promptVersion": "ayu-daily-v6",
       "schemaVersion": "1.1",
       "rendererVersion": "ayu-html-canvas-v1",
       "model": "deepseek-v4-flash",
