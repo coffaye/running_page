@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-28T08:09:54Z",
+  "generatedAt": "2026-08-28T08:22:10Z",
   "reports": {
     "1787696516000": {
       "runId": "1787696516000",
@@ -20,10 +20,10 @@
       "runId": "1784804397000",
       "localDate": "2026-07-23",
       "url": "reports/daily/2026-07-23/1784804397000.html",
-      "generatedAt": "2026-08-28T08:02:55Z",
+      "generatedAt": "2026-08-28T08:22:09Z",
       "hubVersion": "0.2.0",
       "engineVersion": "0.2.0",
-      "engineCommit": "a8686ad35b1226d5569eab28543ad4ab25183274",
+      "engineCommit": "0d196007eeddcf3cae322baea34740e7bc0b7de7",
       "promptVersion": "ayu-daily-v6",
       "schemaVersion": "1.1",
       "rendererVersion": "ayu-html-canvas-v1",
