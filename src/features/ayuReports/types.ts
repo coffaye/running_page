@@ -3,6 +3,7 @@ export interface ReportEntry {
   localDate: string;
   url: string;
   generatedAt?: string;
+  hubVersion?: string;
   engineVersion?: string;
   engineCommit?: string;
   schemaVersion?: string;

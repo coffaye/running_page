@@ -29,6 +29,7 @@ const parseEntry = (value: unknown): ReportEntry | null => {
   };
   const optionalStringFields = [
     'generatedAt',
+    'hubVersion',
     'engineVersion',
     'engineCommit',
     'schemaVersion',
