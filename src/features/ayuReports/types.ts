@@ -11,6 +11,10 @@ export interface ReportEntry {
   rendererVersion?: string;
   model?: string;
   reasoningEffort?: string;
+  dataSource?: string;
+  skillContractVersion?: string;
+  skillSourceCommit?: string;
+  collectorContractVersion?: string;
 }
 
 export interface ReportManifest {

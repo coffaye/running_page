@@ -45,6 +45,33 @@ test('manifest parser validates ready entries and string run_id identity', () =>
   );
 });
 
+test('manifest parser preserves optional Skill provenance and ignores unknown metadata', () => {
+  const parsed = parseReportManifest({
+    schemaVersion: 1,
+    reports: {
+      '789': {
+        runId: '789',
+        localDate: '2026-09-03',
+        url: 'reports/daily/2026-09-03/789.html',
+        dataSource: 'coros-mcp',
+        skillContractVersion: '1.0.0',
+        skillSourceCommit: '98e4fb3b677e9bf3a6a120c11093c4ce1bcc3f37',
+        collectorContractVersion: 'coros-daily-bundle-v1',
+        futureMetadata: { ignored: true },
+      },
+    },
+  });
+  assert.deepEqual(parsed?.reports['789'], {
+    runId: '789',
+    localDate: '2026-09-03',
+    url: 'reports/daily/2026-09-03/789.html',
+    dataSource: 'coros-mcp',
+    skillContractVersion: '1.0.0',
+    skillSourceCommit: '98e4fb3b677e9bf3a6a120c11093c4ce1bcc3f37',
+    collectorContractVersion: 'coros-daily-bundle-v1',
+  });
+});
+
 test('trigger URL carries only the string run_id and preserves other query params', () => {
   assert.equal(
     getReportTriggerUrl(

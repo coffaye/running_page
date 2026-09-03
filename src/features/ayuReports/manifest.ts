@@ -37,6 +37,10 @@ const parseEntry = (value: unknown): ReportEntry | null => {
     'rendererVersion',
     'model',
     'reasoningEffort',
+    'dataSource',
+    'skillContractVersion',
+    'skillSourceCommit',
+    'collectorContractVersion',
   ] as const;
   for (const field of optionalStringFields) {
     const fieldValue = value[field];
