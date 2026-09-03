@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-28T09:01:22Z",
+  "generatedAt": "2026-09-03T08:05:03Z",
   "reports": {
     "1787696516000": {
       "runId": "1787696516000",
@@ -97,6 +97,20 @@
       "promptVersion": "ayu-daily-v6",
       "schemaVersion": "1.1",
       "rendererVersion": "ayu-html-canvas-v1",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "low"
+    },
+    "1767134280000": {
+      "runId": "1767134280000",
+      "localDate": "2025-12-31",
+      "url": "reports/daily/2025-12-31/1767134280000.html",
+      "generatedAt": "2026-09-03T08:05:02Z",
+      "hubVersion": "0.4.0",
+      "engineVersion": "0.4.0",
+      "engineCommit": "4e505e9d7f41f8e9f68bd9ac6a3cf50f7db06734",
+      "promptVersion": "ayu-daily-v7",
+      "schemaVersion": "1.1",
+      "rendererVersion": "ayu-html-canvas-v3",
       "model": "deepseek-v4-flash",
       "reasoningEffort": "low"
     }
