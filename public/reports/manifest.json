@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-03T09:26:07Z",
+  "generatedAt": "2026-09-04T02:31:13Z",
   "reports": {
     "1787696516000": {
       "runId": "1787696516000",
@@ -119,6 +119,24 @@
       "localDate": "2026-09-03",
       "url": "reports/daily/2026-09-03/1788387238000.html",
       "generatedAt": "2026-09-03T09:26:06Z",
+      "hubVersion": "0.4.0",
+      "engineVersion": "0.4.0",
+      "engineCommit": "e70bf6c88ffdd985fb935d7ff8592e0f404eac15",
+      "promptVersion": "ayu-daily-v7",
+      "schemaVersion": "1.1",
+      "rendererVersion": "ayu-html-canvas-v3",
+      "model": "deepseek-v4-flash",
+      "reasoningEffort": "low",
+      "dataSource": "coros-mcp",
+      "skillContractVersion": "1.0.0",
+      "skillSourceCommit": "98e4fb3b677e9bf3a6a120c11093c4ce1bcc3f37",
+      "collectorContractVersion": "coros-daily-bundle-v1"
+    },
+    "1788303307000": {
+      "runId": "1788303307000",
+      "localDate": "2026-09-02",
+      "url": "reports/daily/2026-09-02/1788303307000.html",
+      "generatedAt": "2026-09-04T02:31:12Z",
       "hubVersion": "0.4.0",
       "engineVersion": "0.4.0",
       "engineCommit": "e70bf6c88ffdd985fb935d7ff8592e0f404eac15",
