@@ -23,6 +23,7 @@ interface MenuPosition {
 
 const MENU_WIDTH = 144;
 const VIEWPORT_GUTTER = 8;
+const REPORT_MENU_OPEN_EVENT = 'ayu-report-menu-open';
 
 const positionMenu = (button: HTMLButtonElement): MenuPosition => {
   const rect = button.getBoundingClientRect();
@@ -51,8 +52,25 @@ const ReportActionMenu = ({ runId, report }: ReportActionMenuProps) => {
   const toggle = useCallback(() => {
     if (!buttonRef.current) return;
     setPosition(positionMenu(buttonRef.current));
-    setOpen((current) => !current);
-  }, []);
+    if (!open) {
+      window.dispatchEvent(
+        new CustomEvent(REPORT_MENU_OPEN_EVENT, {
+          detail: { menuId },
+        })
+      );
+    }
+    setOpen(!open);
+  }, [menuId, open]);
+
+  useEffect(() => {
+    const handleOtherMenuOpen = (event: Event) => {
+      const customEvent = event as CustomEvent<{ menuId?: string }>;
+      if (customEvent.detail?.menuId !== menuId) close();
+    };
+    window.addEventListener(REPORT_MENU_OPEN_EVENT, handleOtherMenuOpen);
+    return () =>
+      window.removeEventListener(REPORT_MENU_OPEN_EVENT, handleOtherMenuOpen);
+  }, [close, menuId]);
 
   useEffect(() => {
     if (!open) return undefined;
