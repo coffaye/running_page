@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ayu Running · 2026-09-15 日报</title>
+<style>
+  :root{
+    --green:#56FFA3;--bg:#080B09;--soft:#0D120F;--ink:#F2F6F3;
+    --dim:rgba(242,246,243,.72);--meta:rgba(242,246,243,.42);--line:rgba(242,246,243,.09);
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.7;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:linear-gradient(rgba(86,255,163,.05) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(86,255,163,.05) 1px,transparent 1px);
+    background-size:90px 90px;
+    -webkit-mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 0%,transparent 80%);
+    mask-image:radial-gradient(ellipse 90% 60% at 50% 0%,#000 0%,transparent 80%);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(58% 42% at 72% -12%,rgba(86,255,163,.10),transparent 62%),
+               radial-gradient(40% 30% at 8% 6%,rgba(86,255,163,.05),transparent 66%);
+  }
+  .mono{font-family:var(--mono)}
+  header.topbar{
+    position:fixed;top:0;left:0;right:0;z-index:30;height:62px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 clamp(18px,4vw,40px);
+    background:rgba(8,11,9,.78);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700;letter-spacing:.02em}
+  .brand .dot,.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);flex:none}
+  .brand .ayu{color:var(--green)}
+  .brand .run{color:#fff}
+  #pngbtn{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;
+    color:var(--green);background:rgba(86,255,163,.08);
+    border:1px solid rgba(86,255,163,.42);border-radius:999px;
+    padding:8px 18px;cursor:pointer;transition:.18s;
+  }
+  #pngbtn:hover{background:rgba(86,255,163,.16)}
+  #pngbtn:disabled{opacity:.55;cursor:default}
+  main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 clamp(20px,5vw,44px)}
+  .hero{padding:150px 0 46px}
+  .kicker{font-size:11.5px;letter-spacing:.16em;color:var(--meta);margin:0 0 22px;text-transform:uppercase}
+  h1{font-size:clamp(30px,4.6vw,50px);line-height:1.2;letter-spacing:-.02em;margin:0 0 24px;font-weight:700}
+  .sub{color:var(--dim);font-size:16px;margin:0 0 22px;max-width:46em}
+  .metaline{font-family:var(--mono);font-size:12.5px;color:var(--meta);margin:0;letter-spacing:.02em}
+  nav.pillnav{
+    position:sticky;top:76px;z-index:20;display:flex;gap:4px;flex-wrap:wrap;
+    padding:5px;margin:0 0 8px;border:1px solid var(--line);border-radius:999px;
+    background:rgba(13,18,15,.82);backdrop-filter:blur(12px);width:fit-content;max-width:100%;
+  }
+  nav.pillnav a{
+    font-size:13px;color:var(--dim);text-decoration:none;padding:7px 16px;border-radius:999px;
+    transition:.18s;white-space:nowrap;
+  }
+  nav.pillnav a:hover{color:#fff}
+  nav.pillnav a.active{color:var(--green);background:rgba(86,255,163,.12)}
+  section.sec{border-top:1px solid var(--line);padding:54px 0 8px}
+  .label{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;color:var(--meta);margin:0 0 20px;text-transform:uppercase}
+  h2{font-size:clamp(21px,2.6vw,27px);line-height:1.35;margin:0 0 18px;font-weight:700}
+  h3{font-size:15px;margin:0 0 14px;font-weight:700;letter-spacing:.02em}
+  p{margin:0 0 16px}
+  .conclusion{color:var(--ink);font-size:16.5px}
+  .scoreline{display:flex;align-items:baseline;gap:26px;flex-wrap:wrap;margin:6px 0 26px}
+  .score{font-family:var(--mono);font-size:64px;font-weight:700;line-height:1;color:#fff}
+  .score .den{font-size:20px;color:var(--green);font-weight:500;margin-left:4px}
+  .statusline{font-size:14px;color:var(--green);display:flex;align-items:center;gap:9px;margin:0}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:24px 20px;margin:30px 0 4px}
+  .metrics>div,.loaditem{border-top:1px solid var(--line);padding-top:12px}
+  .k{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--meta);margin-bottom:6px}
+  .v{font-family:var(--mono);font-size:25px;font-weight:600;color:#fff;line-height:1.15}
+  .u{font-family:var(--mono);font-size:11.5px;color:var(--green);margin-left:6px}
+  .loadrow{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:6px 0 22px}
+  .statusstack{margin:0 0 22px}
+  .statusstack .statusline{margin-bottom:10px}
+  figure{margin:34px 0 10px}
+  svg{width:100%;height:auto;display:block}
+  .caption{font-family:var(--mono);font-size:11.5px;color:var(--meta);margin:12px 0 0;line-height:1.7}
+  .ev{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin:26px 0 8px}
+  ul.evlist{list-style:none;padding:0;margin:0}
+  ul.evlist li{position:relative;padding-left:20px;margin-bottom:18px;color:var(--dim);font-size:15px}
+  ul.evlist li::before{content:"";position:absolute;left:2px;top:11px;width:6px;height:6px;border-radius:50%;background:var(--green)}
+  ul.evlist strong{color:#fff;font-weight:600}
+  .planhead{font-size:clamp(22px,3vw,30px);margin:0 0 14px}
+  .planhead .plan{color:var(--green);font-family:var(--mono)}
+  .note{font-size:13px;color:var(--meta);font-family:var(--mono);line-height:1.75}
+  footer{
+    position:relative;z-index:1;max-width:900px;margin:64px auto 0;
+    padding:22px clamp(20px,5vw,44px) 46px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:11.5px;color:var(--meta);
+  }
+  @media (max-width:800px){
+    .hero{padding-top:126px}
+    .metrics{grid-template-columns:repeat(2,1fr)}
+    .ev{grid-template-columns:1fr;gap:30px}
+    nav.pillnav{top:70px}
+    .score{font-size:52px}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span><span class="ayu">Ayu</span><span class="run">Running</span></div>
+  <button id="pngbtn" type="button">下载 PNG</button>
+</header>
+
+<main>
+
+  <section class="hero">
+    <p class="kicker mono">Daily 每日复盘 · 2026-09-15</p>
+    <h1>16 公里有氧输出极稳，后段心率抬升是课内唯一明显变化</h1>
+    <p class="sub">16.00 km 连续有氧，与当日计划「16K有氧跑」按运动类型、距离、时长匹配。计划估算 1:23:36 / 138 TL，实际 1:26:05 / 98 TL。16 个整公里配速落在 5:21–5:26 之间，极差 5 秒；后半平均心率 131.8 bpm，比前半的 127.6 bpm 高约 4 bpm（前后半均值为计算值）。</p>
+    <p class="metaline">COROS MCP 已同步 · 2026-09-15 · 16.00 km · 1:26:05 · 5:23 /km · 130 bpm · 98 TL</p>
+  </section>
+
+  <nav class="pillnav" id="nav">
+    <a href="#overview" class="active" aria-current="true">总览</a>
+    <a href="#structure">结构</a>
+    <a href="#evidence">证据</a>
+    <a href="#load">负荷</a>
+    <a href="#tomorrow">明日</a>
+  </nav>
+
+  <section id="overview" class="sec">
+    <p class="label">Overview 总览</p>
+    <div class="scoreline">
+      <span class="score">83<span class="den">/100</span></span>
+      <span class="statusline"><span class="dot"></span>已完成 · 有氧跑 · Base</span>
+    </div>
+    <p class="conclusion">主结论：这是一堂距离按计划完成、输出极稳的 Base 有氧课——16 个整公里配速极差只有 5 秒，前后半程均配速几乎相同（322.9 与 322.8 秒每公里，计算值）。课内唯一明显的变化是生理代价：配速基本没动，后半平均心率升了约 4 bpm，末三圈分别为 135 / 135 / 137 bpm。它值得记一笔，但还不足以支撑关于疲劳、脱水或退步的结论。</p>
+    <div class="metrics">
+      <div><span class="k">距离</span><span class="v">16.00<span class="u">km</span></span></div>
+      <div><span class="k">时长</span><span class="v">1:26:05</span></div>
+      <div><span class="k">平均配速</span><span class="v">5:23<span class="u">/km</span></span></div>
+      <div><span class="k">调整后配速</span><span class="v">5:22<span class="u">/km</span></span></div>
+      <div><span class="k">平均心率</span><span class="v">130<span class="u">bpm</span></span></div>
+      <div><span class="k">最高心率</span><span class="v">141<span class="u">bpm</span></span></div>
+      <div><span class="k">训练负荷</span><span class="v">98<span class="u">计划 138</span></span></div>
+      <div><span class="k">步频</span><span class="v">195<span class="u">spm</span></span></div>
+      <div><span class="k">步幅</span><span class="v">0.95<span class="u">m</span></span></div>
+      <div><span class="k">功率</span><span class="v">195<span class="u">W</span></span></div>
+      <div><span class="k">训练效果</span><span class="v">2.7<span class="u">无氧 0.0</span></span></div>
+      <div><span class="k">能量消耗</span><span class="v">878<span class="u">kcal</span></span></div>
+    </div>
+    <p class="note">83 为本报告计算值：由距离与计划达成、输出稳定性、生理代价受控、计划负荷达成四项合成，不是 COROS 输出，也不代表长期能力。</p>
+  </section>
+
+  <section id="structure" class="sec">
+    <p class="label">Structure 训练结构</p>
+    <h2>一条连续的有氧段，无法还原分组结构</h2>
+    <p>活动详情与 16 个整公里圈都可读，但没有结构化训练段，分圈只有自动公里圈。因此这里只能按整公里看趋势，不能分别评价热身、主训练、组间恢复与放松——结构按「未知」处理。</p>
+    <p>按整公里看：第 1 公里 5:24，随后在 5:22–5:26 之间小幅波动；末三公里 5:21 / 5:21 / 5:22，只比全程均值快约 1–2 秒/公里。幅度太小，不足以把这堂课改写成渐进跑，它更接近一次均匀的有氧课。</p>
+    <figure>
+      <svg viewBox="0 0 900 390" role="img" aria-label="16 个整公里的配速柱状图与平均心率折线图">
+        <rect x="70" y="14" width="12" height="12" rx="3" fill="#56FFA3" opacity="0.55"></rect>
+        <text x="90" y="25" font-family="ui-monospace,Menlo,monospace" font-size="12" fill="rgba(242,246,243,0.42)">每公里配速</text>
+        <line x1="200" y1="20" x2="226" y2="20" stroke="#F2F6F3" stroke-width="2" opacity="0.85"></line>
+        <text x="234" y="25" font-family="ui-monospace,Menlo,monospace" font-size="12" fill="rgba(242,246,243,0.42)">平均心率</text>
+
+        <line x1="70" y1="52" x2="870" y2="52" stroke="rgba(242,246,243,0.10)"></line>
+        <line x1="70" y1="158" x2="870" y2="158" stroke="rgba(242,246,243,0.18)"></line>
+        <line x1="70" y1="200" x2="870" y2="200" stroke="rgba(242,246,243,0.10)"></line>
+        <line x1="70" y1="310" x2="870" y2="310" stroke="rgba(242,246,243,0.10)"></line>
+        <line x1="462" y1="40" x2="462" y2="318" stroke="rgba(242,246,243,0.14)" stroke-dasharray="4 7"></line>
+
+        <text x="62" y="56" text-anchor="end" font-family="ui-monospace,Menlo,monospace" font-size="11" fill="rgba(242,246,243,0.42)">5:20</text>
+        <text x="62" y="162" text-anchor="end" font-family="ui-monospace,Menlo,monospace" font-size="11" fill="rgba(242,246,243,0.42)">5:27</text>
+        <text x="62" y="204" text-anchor="end" font-family="ui-monospace,Menlo,monospace" font-size="11" fill="rgba(242,246,243,0.42)">140</text>
+        <text x="62" y="314" text-anchor="end" font-family="ui-monospace,Menlo,monospace" font-size="11" fill="rgba(242,246,243,0.42)">120</text>
+
+        <g fill="#56FFA3" opacity="0.55">
+          <rect x="79" y="111" width="32" height="47" rx="3"></rect>
+          <rect x="129" y="92" width="32" height="66" rx="3"></rect>
+          <rect x="179" y="87" width="32" height="71" rx="3"></rect>
+          <rect x="229" y="87" width="32" height="71" rx="3"></rect>
+          <rect x="279" y="97" width="32" height="61" rx="3"></rect>
+          <rect x="329" y="123" width="32" height="35" rx="3"></rect>
+          <rect x="379" y="76" width="32" height="82" rx="3"></rect>
+          <rect x="429" y="89" width="32" height="69" rx="3"></rect>
+          <rect x="479" y="113" width="32" height="45" rx="3"></rect>
+          <rect x="529" y="97" width="32" height="61" rx="3"></rect>
+          <rect x="579" y="97" width="32" height="61" rx="3"></rect>
+          <rect x="629" y="143" width="32" height="15" rx="3"></rect>
+          <rect x="679" y="76" width="32" height="82" rx="3"></rect>
+          <rect x="729" y="74" width="32" height="84" rx="3"></rect>
+          <rect x="779" y="67" width="32" height="91" rx="3"></rect>
+          <rect x="829" y="88" width="32" height="70" rx="3"></rect>
+        </g>
+
+        <polyline fill="none" stroke="#F2F6F3" stroke-width="2" opacity="0.9"
+          points="95,288 145,271.5 195,266 245,271.5 295,255 345,260.5 395,266 445,266 495,260.5 545,260.5 595,260.5 645,260.5 695,249.5 745,227.5 795,227.5 845,216.5"></polyline>
+        <g fill="#F2F6F3" opacity="0.9">
+          <circle cx="95" cy="288" r="3"></circle><circle cx="145" cy="271.5" r="3"></circle>
+          <circle cx="195" cy="266" r="3"></circle><circle cx="245" cy="271.5" r="3"></circle>
+          <circle cx="295" cy="255" r="3"></circle><circle cx="345" cy="260.5" r="3"></circle>
+          <circle cx="395" cy="266" r="3"></circle><circle cx="445" cy="266" r="3"></circle>
+          <circle cx="495" cy="260.5" r="3"></circle><circle cx="545" cy="260.5" r="3"></circle>
+          <circle cx="595" cy="260.5" r="3"></circle><circle cx="645" cy="260.5" r="3"></circle>
+          <circle cx="695" cy="249.5" r="3"></circle><circle cx="745" cy="227.5" r="3"></circle>
+          <circle cx="795" cy="227.5" r="3"></circle><circle cx="845" cy="216.5" r="3"></circle>
+        </g>
+
+        <g font-family="ui-monospace,Menlo,monospace" font-size="11" fill="rgba(242,246,243,0.42)">
+          <text x="95" y="336" text-anchor="middle">1</text>
+          <text x="245" y="336" text-anchor="middle">4</text>
+          <text x="445" y="336" text-anchor="middle">8</text>
+          <text x="645" y="336" text-anchor="middle">12</text>
+          <text x="845" y="336" text-anchor="middle">16</text>
+          <text x="70" y="372">前半 均配 322.9 s/km · 均心率 127.6 bpm　　后半 322.8 s/km · 131.8 bpm（计算值）</text>
+        </g>
+      </svg>
+    </figure>
+    <p class="caption">配速柱高按 5:20–5:27 的纵轴刻度绘制，心率线按 120–140 bpm 刻度绘制，两轴共用这条横轴。数据来自活动分圈，16 段连续；前后半程均值与秒/公里数值为计算值。柱高差异本身很小，这就是这堂课的主要信息。</p>
+  </section>
+
+  <section id="evidence" class="sec">
+    <p class="label">Evidence 证据</p>
+    <h2>优势与当前关注</h2>
+    <div class="ev">
+      <div>
+        <h3>做得好</h3>
+        <ul class="evlist">
+          <li><strong>输出稳定。</strong>16 个整公里配速落在 5:21–5:26 /km，全程极差 5 秒；前半与后半均配速 322.9 与 322.8 秒每公里（计算值），基本完全一致。</li>
+          <li><strong>距离与计划匹配。</strong>当日计划为 16K有氧跑（16.00 km / 1:23:36 / 138 TL），实际 16.00 km / 1:26:05；计划匹配依据为运动类型、距离、时长三项。</li>
+          <li><strong>强度受控。</strong>平均心率 130、最高 141 bpm，体感 Very Easy，有氧训练效果 2.7、无氧 0.0，整次平均步频 195 spm、平均步幅 0.95 m（分圈无步频数据）；触地时间从首圈 203 ms 收敛到约 195 ms，末圈 197 ms。</li>
+        </ul>
+      </div>
+      <div>
+        <h3>当前关注</h3>
+        <ul class="evlist">
+          <li><strong>相同配速下后段心率抬升。</strong>前半平均 127.6 → 后半 131.8 bpm（计算值），末三圈 135 / 135 / 137 bpm。支持证据是配速几乎没变；未知项是温度、补给、睡眠与恢复信息全部缺失，无法区分热身后的心率爬升、热应激、累积疲劳或测量误差。置信度：中。</li>
+          <li><strong>执行层面的偏差单独记一笔。</strong>训练负荷 98 对计划 138，约为计划的 71%；计划估算时长 1:23:36 对应约 5:13.5 /km，实际平均配速 5:23 /km，慢约 9.5 秒/公里（均为计算值）。设备把 performance 标为 Below Average，但这是一堂计划内的有氧课，用它判断进步或退步证据不足。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="load" class="sec">
+    <p class="label">Load 近期负荷</p>
+    <h2>短长期负荷接近，负荷比 1.04</h2>
+    <div class="loadrow">
+      <div class="loaditem"><span class="k">短期负荷</span><span class="v">151</span></div>
+      <div class="loaditem"><span class="k">长期负荷</span><span class="v">144</span></div>
+      <div class="loaditem"><span class="k">负荷比</span><span class="v">1.04</span></div>
+    </div>
+    <div class="statusstack">
+      <p class="statusline"><span class="dot"></span>Optimized</p>
+      <p class="statusline"><span class="dot"></span>恢复估计未随 2026-09-15 同步（未知）</p>
+    </div>
+    <p>本次训练负荷 98，计划 138；短期负荷 151 与长期负荷 144 很接近，比值 1.04，按设备口径处于 Optimized 区间。恢复估计本次只包含当前值、未按 2026-09-15 同步，因此这里不填任何具体小时数，也不从单次负荷反推恢复时长。</p>
+    <p class="note">能力模型（设备估计）：VO₂max 59 · 马拉松预测 3:08:03。属于设备模型输出，不是成绩承诺，也不能由一次有氧课反向改写。</p>
+  </section>
+
+  <section id="tomorrow" class="sec">
+    <p class="label">Tomorrow 明日课表</p>
+    <h2 class="planhead">明日课表：<span class="plan">5K+5x200</span></h2>
+    <p class="metaline">6.00 km · 31:11 · 80 TL · 详细分段未同步</p>
+    <p style="margin-top:18px">课表只同步了标题、距离、时长和负荷，目标配速与组间恢复未知，以手表课表为准。按标题推断，前 5 公里是有氧铺垫，随后是 5×200 米的短加速段；这与总距离 6.00 km 一致，但仍只是按名称的推断。方向是把前段跑稳，让 200 米段在动作还能保持的前提下完成。</p>
+  </section>
+
+</main>
+
+<footer>
+  <span>DATA · COROS MCP · 2026-09-15</span>
+  <span>Ayu Running</span>
+</footer>
+
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('#nav a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'));});
+  function setActive(i){
+    links.forEach(function(a,j){
+      var on=(i===j);
+      a.classList.toggle('active',on);
+      if(on){a.setAttribute('aria-current','true');}else{a.removeAttribute('aria-current');}
+    });
+  }
+  function onScroll(){
+    var probe=window.innerHeight*0.30,idx=0;
+    for(var i=0;i<secs.length;i++){
+      if(secs[i].getBoundingClientRect().top<=probe){idx=i;}
+    }
+    if(window.innerHeight+window.scrollY>=document.body.scrollHeight-4){idx=secs.length-1;}
+    setActive(idx);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll);
+  links.forEach(function(a,i){a.addEventListener('click',function(){setActive(i);});});
+  onScroll();
+
+  var SANS='"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif';
+  var MONO='ui-monospace,Menlo,Consolas,"Courier New",monospace';
+  var GREEN='#56FFA3',INK='#F2F6F3',DIM='rgba(242,246,243,0.72)',META='rgba(242,246,243,0.42)',LINE='rgba(242,246,243,0.12)';
+  var W=1240,MIN_H=1754,PAD=92,IW=W-PAD*2,SCALE=2;
+  function F(w,s,f){return w+' '+s+'px '+f;}
+
+  var scratch=document.createElement('canvas').getContext('2d');
+  function wrap(text,font,maxW){
+    scratch.font=font;
+    var out=[],cur='';
+    var t=String(text);
+    for(var i=0;i<t.length;i++){
+      var nxt=cur+t.charAt(i);
+      if(cur&&scratch.measureText(nxt).width>maxW){out.push(cur);cur=t.charAt(i);}
+      else{cur=nxt;}
+    }
+    if(cur){out.push(cur);}
+    return out;
+  }
+
+  function render(ctx,draw,canvasH){
+    var pad=PAD,right=W-PAD,y=104;
+
+    var P=function(text,x,yy,maxW,font,color,lh){
+      var lines=wrap(text,font,maxW);
+      if(draw){
+        ctx.font=font;ctx.fillStyle=color;ctx.textAlign='left';ctx.textBaseline='alphabetic';
+        for(var i=0;i<lines.length;i++){ctx.fillText(lines[i],x,yy+i*lh);}
+      }
+      return yy+(lines.length-1)*lh;
+    };
+    var rule=function(yy){
+      if(draw){ctx.strokeStyle=LINE;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,yy+0.5);ctx.lineTo(right,yy+0.5);ctx.stroke();}
+      return yy+54;
+    };
+    var label=function(t,yy){
+      if(draw){ctx.font=F(500,19,MONO);ctx.fillStyle=META;ctx.textAlign='left';ctx.fillText(t,pad,yy);}
+    };
+    var dotline=function(t,yy){
+      if(draw){
+        ctx.beginPath();ctx.arc(pad+7,yy-7,7,0,Math.PI*2);ctx.fillStyle=GREEN;ctx.fill();
+        ctx.font=F(500,24,SANS);ctx.fillStyle=GREEN;ctx.textAlign='left';ctx.fillText(t,pad+28,yy);
+      }
+    };
+    var metricRow=function(yy,items){
+      var colW=IW/4,labF=F(400,19,MONO),valF=F(600,36,MONO),unitF=F(500,19,MONO);
+      for(var i=0;i<items.length;i++){
+        var it=items[i],x=pad+i*colW;
+        if(draw){
+          ctx.textAlign='left';
+          ctx.font=labF;ctx.fillStyle=META;ctx.fillText(it[0],x,yy);
+          ctx.font=valF;ctx.fillStyle=INK;ctx.fillText(it[1],x,yy+50);
+          var w=ctx.measureText(it[1]).width;
+          ctx.font=unitF;ctx.fillStyle=GREEN;ctx.fillText(it[2],x+w+10,yy+50);
+        }
+      }
+      return yy+104;
+    };
+    var bullet=function(text,yy){
+      var f=F(400,24,SANS),lh=38;
+      var lines=wrap(text,f,IW-34);
+      if(draw){
+        ctx.beginPath();ctx.arc(pad+7,yy-7,5,0,Math.PI*2);ctx.fillStyle=GREEN;ctx.fill();
+        ctx.font=f;ctx.fillStyle=DIM;ctx.textAlign='left';
+        for(var i=0;i<lines.length;i++){ctx.fillText(lines[i],pad+34,yy+i*lh);}
+      }
+      return yy+(lines.length-1)*lh+36;
+    };
+
+    if(draw){
+      ctx.fillStyle='#080B09';ctx.fillRect(0,0,W,canvasH);
+      ctx.lineWidth=1;ctx.strokeStyle='rgba(86,255,163,0.05)';
+      for(var gx=90;gx<W;gx+=90){ctx.beginPath();ctx.moveTo(gx+0.5,0);ctx.lineTo(gx+0.5,canvasH);ctx.stroke();}
+      for(var gy=90;gy<canvasH;gy+=90){ctx.beginPath();ctx.moveTo(0,gy+0.5);ctx.lineTo(W,gy+0.5);ctx.stroke();}
+      var rg=ctx.createRadialGradient(W*0.70,-140,0,W*0.70,-140,780);
+      rg.addColorStop(0,'rgba(86,255,163,0.10)');rg.addColorStop(1,'rgba(86,255,163,0)');
+      ctx.fillStyle=rg;ctx.fillRect(0,0,W,760);
+    }
+
+    if(draw){
+      ctx.font=F(400,20,MONO);ctx.fillStyle=META;ctx.textAlign='left';
+      ctx.fillText('DAILY 每日复盘 · 2026-09-15',pad,y);
+      ctx.font=F(400,20,MONO);ctx.fillStyle=DIM;ctx.textAlign='right';
+      ctx.fillText('16.00 KM · 1:26:05 · 5:23 /KM · 130 BPM',right,y);
+    }
+    y=rule(y+30);
+
+    label('TODAY 今日结论',y); y+=46;
+    y=P('16 公里有氧输出极稳，后段心率抬升是课内唯一明显变化',pad,y,IW,F(700,46,SANS),INK,60)+50;
+    y=P('16.00 km 连续有氧，与当日计划「16K有氧跑」按运动类型、距离、时长匹配；计划估算 1:23:36 / 138 TL，实际 1:26:05 / 98 TL，平均配速 5:23 /km。',pad,y,IW*0.94,F(400,25,SANS),DIM,40)+52;
+    dotline('已完成 · 有氧跑 · Base',y); y+=68;
+    y=metricRow(y,[['距离','16.00','km'],['时长','1:26:05',''],['平均配速','5:23','/km'],['平均心率','130','bpm']]);
+    y=metricRow(y,[['训练负荷','98','计划 138'],['步频','195','spm'],['步幅','0.95','m'],['训练效果','2.7','无氧 0.0']]);
+    y+=8;
+
+    y=rule(y); label('EVIDENCE 关键证据',y); y+=48;
+    y=bullet('16 个整公里配速落在 5:21–5:26 /km，极差 5 秒；前半与后半均配速 322.9 / 322.8 秒每公里（计算值），输出几乎一致。',y);
+    y=bullet('前半平均心率 127.6 bpm，后半 131.8 bpm；首圈 124、末圈 137 bpm——配速基本没变，后段生理代价上升（计算值）。',y);
+    y=bullet('平均心率 130、最高 141 bpm，体感 Very Easy，有氧 2.7 / 无氧 0.0，整次平均步频 195 spm，符合 Base 有氧定位。',y);
+
+    y=rule(y+2); label('CONCERN 当前关注',y); y+=48;
+    y=P('相同配速下后段心率抬升，原因未知，不足以推出疲劳、脱水或退步。',pad,y,IW,F(600,26,SANS),INK,40)+44;
+    y=P('温度、补给、睡眠与恢复信息缺失，无法区分热身后的心率爬升、热应激、累积疲劳或测量误差。置信度：中。',pad,y,IW,F(400,23,SANS),DIM,36)+34;
+    y=P('执行偏差单独记：训练负荷 98 对计划 138，约 71%；平均配速比计划估算慢约 9.5 秒/公里（均为计算值）。',pad,y,IW,F(400,23,SANS),DIM,36)+42;
+
+    y=rule(y); label('LOAD 近期负荷',y); y+=52;
+    var loadItems=[['短期负荷','151'],['长期负荷','144'],['负荷比','1.04']],cw=IW/3;
+    for(var li=0;li<loadItems.length;li++){
+      var lx=pad+li*cw;
+      if(draw){
+        ctx.textAlign='left';
+        ctx.font=F(400,19,MONO);ctx.fillStyle=META;ctx.fillText(loadItems[li][0],lx,y);
+        ctx.font=F(600,40,MONO);ctx.fillStyle=INK;ctx.fillText(loadItems[li][1],lx,y+52);
+      }
+    }
+    y+=98;
+    dotline('Optimized',y); y+=44;
+    dotline('恢复估计未随 2026-09-15 同步（未知）',y); y+=52;
+    y=P('本次训练负荷 98，计划 138；短期与长期负荷接近，比值 1.04，按设备口径属于 Optimized 区间。恢复估计未随当日同步，不填具体小时数。',pad,y,IW,F(400,23,SANS),DIM,36)+40;
+
+    y=rule(y); label('TOMORROW 明日课表',y); y+=56;
+    if(draw){ctx.textAlign='left';ctx.font=F(600,38,SANS);ctx.fillStyle=GREEN;ctx.fillText('5K+5x200',pad,y);}
+    y+=44;
+    if(draw){ctx.font=F(400,21,MONO);ctx.fillStyle=META;ctx.fillText('6.00 km · 31:11 · 80 TL · 详细分段未同步',pad,y);}
+    y+=48;
+    y=P('以手表课表为准：按标题推断前 5 公里是有氧铺垫，随后是 5×200 米短加速段（与总距离 6.00 km 一致）。方向是把前段跑稳，200 米段在动作还能保持的前提下完成；目标配速与组间恢复未同步，不推测具体数字。',pad,y,IW,F(400,23,SANS),DIM,36)+74;
+
+    if(draw){ctx.strokeStyle=LINE;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad,y+0.5);ctx.lineTo(right,y+0.5);ctx.stroke();}
+    return y;
+  }
+
+  async function exportPng(){
+    var btn=document.getElementById('pngbtn');
+    var original=btn.textContent;
+    btn.disabled=true;btn.textContent='生成中…';
+    try{
+      if(document.fonts&&document.fonts.ready){try{await document.fonts.ready;}catch(e){}}
+      var mctx=document.createElement('canvas').getContext('2d');
+      var endY=render(mctx,false,MIN_H);
+      var H=Math.max(MIN_H,Math.ceil(endY+150));
+      var c=document.createElement('canvas');
+      c.width=W*SCALE;c.height=H*SCALE;
+      var ctx=c.getContext('2d');
+      ctx.scale(SCALE,SCALE);
+      render(ctx,true,H);
+      await new Promise(function(res){
+        c.toBlob(function(blob){
+          var url=URL.createObjectURL(blob);
+          var a=document.createElement('a');
+          a.href=url;a.download='Ayu_Running_2026-09-15.png';
+          document.body.appendChild(a);a.click();a.remove();
+          setTimeout(function(){URL.revokeObjectURL(url);},2000);
+          res();
+        },'image/png');
+      });
+    }catch(err){
+      alert('PNG 生成失败，请重试。');
+    }finally{
+      btn.disabled=false;btn.textContent=original;
+    }
+  }
+  document.getElementById('pngbtn').addEventListener('click',exportPng);
+})();
+</script>
+</body>
+</html>
