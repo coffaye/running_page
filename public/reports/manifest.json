@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-14T03:01:31Z",
+  "generatedAt": "2026-09-16T01:40:07Z",
   "reports": {
     "1787696516000": {
       "runId": "1787696516000",
@@ -208,18 +208,15 @@
       "runId": "1789255559000",
       "localDate": "2026-09-13",
       "url": "reports/daily/2026-09-13/1789255559000.html",
-      "generatedAt": "2026-09-14T03:01:30Z",
-      "hubVersion": "0.4.2",
-      "engineVersion": "0.4.2",
-      "engineCommit": "58d0f54b99f6678b1753e75630d7144a6e49653c",
-      "promptVersion": "ayu-daily-v7",
-      "schemaVersion": "1.1",
-      "rendererVersion": "ayu-html-canvas-v3.1",
-      "model": "deepseek-v4-flash",
-      "reasoningEffort": "low",
+      "generatedAt": "2026-09-16T01:40:06Z",
+      "engineCommit": "ed8c8b0a3b3cdfaaf96f2082e1e1ec668ab1a009",
+      "model": "deepseek-flash",
+      "reasoningEffort": "high",
+      "generationMode": "native-skill-agent",
+      "nativeRuntimeVersion": "native-agent-runtime-v1",
+      "nativeSkillSource": "ayu-running-reports:frozen-snapshot:7c23f7c28643bc0d62d84afb2a8a782fb966879e8e8f30658a4944bd57ee2708",
+      "nativeSkillSnapshotSha256": "7c23f7c28643bc0d62d84afb2a8a782fb966879e8e8f30658a4944bd57ee2708",
       "dataSource": "coros-mcp",
-      "skillContractVersion": "1.1.0",
-      "skillSourceCommit": "3e057c521d82aa09534bde84410cc3b9b945de69",
       "collectorContractVersion": "coros-daily-bundle-v1"
     }
   }
