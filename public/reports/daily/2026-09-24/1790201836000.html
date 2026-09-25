@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ayu Running · 日报 2026-09-24</title>
+<style>
+  :root{
+    --green:#56FFA3;
+    --bg:#080B09;
+    --bg-soft:#0D120F;
+    --text:#F2F6F3;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--text);line-height:1.75;
+    font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(to right,rgba(86,255,163,.045) 1px,transparent 1px),
+      linear-gradient(to bottom,rgba(86,255,163,.045) 1px,transparent 1px);
+    background-size:90px 90px;}
+  .atmo{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(900px 520px at 50% -6%,rgba(86,255,163,.10),transparent 66%);}
+  header.top{position:fixed;top:0;left:0;right:0;height:64px;z-index:50;
+    background:rgba(8,11,9,.84);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(242,246,243,.08);}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .top-inner{height:64px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;letter-spacing:.01em;}
+  .brand .ayu{color:var(--green)}
+  .brand .run{color:#fff}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;
+    box-shadow:0 0 10px rgba(86,255,163,.75);flex:none;}
+  .btn-png{border-radius:999px;padding:8px 18px;font-size:13px;cursor:pointer;
+    border:1px solid rgba(86,255,163,.5);color:var(--green);background:rgba(86,255,163,.08);
+    font-family:inherit;transition:background .2s ease,color .2s ease;}
+  .btn-png:hover{background:rgba(86,255,163,.18)}
+  .btn-png:disabled{opacity:.55;cursor:default}
+  main{position:relative;z-index:1;padding-top:64px}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .hero{padding:72px 0 46px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:rgba(86,255,163,.9);margin:0 0 22px}
+  h1.hero-title{font-size:clamp(30px,5vw,52px);line-height:1.22;letter-spacing:-.01em;
+    font-weight:600;margin:0 0 22px;max-width:820px}
+  .lede{font-size:16px;color:rgba(242,246,243,.7);max-width:720px;margin:0 0 28px}
+  .meta-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-family:var(--mono);font-size:12.5px;color:rgba(242,246,243,.42)}
+  .meta-row .v{color:rgba(242,246,243,.78)}
+  nav.tabs{position:sticky;top:64px;z-index:40;background:rgba(8,11,9,.9);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(242,246,243,.08);}
+  .tabs-inner{display:flex;gap:8px;padding:12px 24px;overflow-x:auto;scrollbar-width:none;max-width:960px;margin:0 auto}
+  .tabs-inner::-webkit-scrollbar{display:none}
+  .tabs a{white-space:nowrap;text-decoration:none;font-size:13px;padding:7px 16px;border-radius:999px;
+    color:rgba(242,246,243,.55);border:1px solid transparent;transition:color .2s ease,background .2s ease}
+  .tabs a.active{color:#080B09;background:var(--green);border-color:var(--green);font-weight:600}
+  section{padding:56px 0;border-top:1px solid rgba(242,246,243,.08)}
+  .sec-label{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;color:rgba(86,255,163,.85);margin:0 0 20px}
+  h2{font-size:22px;font-weight:600;margin:0 0 20px}
+  h3{font-size:15px;font-weight:600;margin:32px 0 12px;color:rgba(242,246,243,.85)}
+  p{margin:0 0 14px;color:rgba(242,246,243,.72);font-size:15px}
+  p.strong{color:var(--text)}
+  .overview-grid{display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:start}
+  .score-block{border-right:1px solid rgba(242,246,243,.1);padding-right:24px}
+  .score{display:flex;align-items:baseline;gap:6px}
+  .score-val{font-size:56px;line-height:1;color:#fff;font-weight:700}
+  .score-den{font-size:20px;color:var(--green);font-weight:600}
+  .score-note{margin:12px 0 0;font-size:11.5px;color:rgba(242,246,243,.42);font-family:var(--mono);line-height:1.5}
+  .status-line{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text);margin:0 0 16px;flex-wrap:wrap}
+  .status-line .sep{color:rgba(242,246,243,.42)}
+  .status-line .type{color:var(--green)}
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px 28px;margin-top:34px}
+  .m-k{display:block;font-size:11.5px;color:rgba(242,246,243,.42);letter-spacing:.06em;margin-bottom:4px}
+  .m-v{display:block;font-family:var(--mono);font-size:16px;color:var(--text)}
+  .table-wrap{overflow-x:auto;margin:24px 0 8px;-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;width:100%;min-width:620px;font-size:13.5px}
+  th,td{text-align:left;padding:12px 14px 12px 0;border-bottom:1px solid rgba(242,246,243,.08);
+    color:rgba(242,246,243,.75);vertical-align:top}
+  th{font-size:11.5px;letter-spacing:.08em;color:rgba(242,246,243,.42);font-weight:500}
+  td.mono,th.mono{font-family:var(--mono)}
+  .chart{margin:28px 0 8px}
+  .chart svg{display:block;width:100%;height:auto}
+  .caption{font-size:12.5px;color:rgba(242,246,243,.42);margin:12px 0 0}
+  .ev{display:grid;grid-template-columns:1fr 1fr;gap:44px}
+  .ev h3{margin-top:0}
+  ul.plain{list-style:none;margin:0;padding:0}
+  ul.plain li{position:relative;padding-left:26px;margin-bottom:16px;font-size:14.5px;color:rgba(242,246,243,.75)}
+  ul.plain li .num{position:absolute;left:0;top:0;font-family:var(--mono);font-size:12px;color:rgba(86,255,163,.85)}
+  ul.plain li strong{color:var(--text)}
+  .load-row{display:flex;flex-wrap:wrap;gap:14px 44px;margin:8px 0 22px}
+  .load-item{display:flex;align-items:baseline;gap:10px}
+  .load-k{font-family:var(--mono);font-size:11.5px;color:rgba(242,246,243,.42);letter-spacing:.06em}
+  .load-v{font-family:var(--mono);font-size:26px;color:var(--text)}
+  .plain-line{display:flex;align-items:center;gap:9px;font-size:13.5px;margin:0 0 10px}
+  .plain-line .g{color:var(--green)}
+  .plain-line .m{color:rgba(242,246,243,.75)}
+  .note{font-size:12.5px;color:rgba(242,246,243,.42);line-height:1.85;margin-top:20px;max-width:760px}
+  .plan-name{color:var(--green)}
+  footer{border-top:1px solid rgba(242,246,243,.08);padding:34px 0 48px;position:relative;z-index:1}
+  .foot-inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:11.5px;color:rgba(242,246,243,.42);letter-spacing:.06em}
+  @media (max-width:800px){
+    .wrap{padding:0 18px}
+    .tabs-inner{padding:10px 18px}
+    .hero{padding:46px 0 32px}
+    .overview-grid{grid-template-columns:1fr;gap:24px}
+    .score-block{border-right:0;border-bottom:1px solid rgba(242,246,243,.1);padding:0 0 20px}
+    .ev{grid-template-columns:1fr;gap:28px}
+    .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+    section{padding:44px 0}
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="atmo"></div>
+
+<header class="top">
+  <div class="wrap top-inner">
+    <div class="brand"><span class="dot"></span><span><span class="ayu">Ayu</span> <span class="run">Running</span></span></div>
+    <button class="btn-png" id="btn-png" type="button">下载 PNG</button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="hero" style="border-top:0">
+      <p class="eyebrow">2026-09-24 · Asia/Shanghai · 阈值节奏</p>
+      <h1 class="hero-title">三段节奏按距离完成，末段代价上升</h1>
+      <p class="lede">课表「2K+8K+10K 节奏」（20.00 km · 1:27:33 · 245 TL）的三段都被完成，距离与顺序对得上：2.00 / 8.00 / 10.00 km，两次慢跑恢复也在。实际总量 20.63 km / 1:31:21，配速逐段下移，心率逐段抬升。</p>
+      <div class="meta-row">
+        <span class="dot"></span><span>COROS MCP 已同步</span>
+        <span>·</span><span>2026-09-24</span>
+        <span>·</span><span class="v">20.63 km</span>
+        <span>·</span><span class="v">1:31:21</span>
+        <span>·</span><span class="v">4:26 /km</span>
+        <span>·</span><span class="v">168 bpm</span>
+        <span>·</span><span class="v">409 TL</span>
+      </div>
+    </section>
+
+    <nav class="tabs" aria-label="报告导航">
+      <div class="tabs-inner">
+        <a href="#overview" class="active" aria-current="true">总览</a>
+        <a href="#structure">结构与图表</a>
+        <a href="#evidence">证据</a>
+        <a href="#load">负荷与恢复</a>
+        <a href="#tomorrow">明日课表</a>
+      </div>
+    </nav>
+
+    <section id="overview">
+      <p class="sec-label">OVERVIEW 总览</p>
+      <div class="overview-grid">
+        <div class="score-block">
+          <div class="score"><span class="score-val mono">84</span><span class="score-den mono">/ 100</span></div>
+          <p class="score-note">执行完成度 · 本报告计算值<br>非 COROS 官方评分</p>
+        </div>
+        <div>
+          <p class="status-line"><span class="dot"></span>三段完成 <span class="sep">·</span> <span class="type">阈值节奏</span></p>
+          <p class="strong">主判断：三段结构完成，后段生理代价上升。</p>
+          <p>三段节奏按课表距离完成：2.00 / 8.00 / 10.00 km，顺序一致，两次慢跑恢复都在。三段节奏用时合计约 82:14，加上两次恢复后与活动总量 20.63 km / 1:31:21 一致。</p>
+          <p>第三段（10K）平均配速 4:11 /km，比第二段（8K）的 4:04 /km 慢约 7 s/km；段内平均心率从 8K 段的约 170 bpm 升到约 176 bpm（段内各公里均值的再平均，计算值）。同一堂课里、相同目的的连续段出现「输出下移 + 心率抬升」，这是数据事实；原因是累积疲劳、环境、补给、睡眠还是测量误差，在现有数据里无法排序。</p>
+          <p>课表预估 20.00 km / 1:27:33 / 245 TL，实际 20.63 km / 1:31:21 / 409 TL，用时比预估多约 3:48。课表没有返回配速或区间步骤，预估口径未知，本报告不把这一差值直接当作执行偏差。</p>
+          <p class="note">计分口径：只看三段是否按课表距离完成、段内配速是否稳定、末段收尾是否守住，为本报告自评，不代表能力、健康或恢复状态。</p>
+        </div>
+      </div>
+      <div class="metrics">
+        <div class="m"><span class="m-k">距离</span><span class="m-v">20.63 km</span></div>
+        <div class="m"><span class="m-k">时间</span><span class="m-v">1:31:21</span></div>
+        <div class="m"><span class="m-k">平均配速</span><span class="m-v">4:26 /km</span></div>
+        <div class="m"><span class="m-k">校正配速</span><span class="m-v">4:25 /km</span></div>
+        <div class="m"><span class="m-k">平均 / 最高心率</span><span class="m-v">168 / 185 bpm</span></div>
+        <div class="m"><span class="m-k">步频 / 步幅</span><span class="m-v">191 spm / 1.18 m</span></div>
+        <div class="m"><span class="m-k">平均功率</span><span class="m-v">236 W</span></div>
+        <div class="m"><span class="m-k">训练负荷</span><span class="m-v">409 TL</span></div>
+        <div class="m"><span class="m-k">训练效果</span><span class="m-v">有氧 4.3 / 无氧 3.9</span></div>
+        <div class="m"><span class="m-k">爬升</span><span class="m-v">17 m / 23 m</span></div>
+        <div class="m"><span class="m-k">消耗</span><span class="m-v">1392 kcal</span></div>
+        <div class="m"><span class="m-k">体感标记 / 表现</span><span class="m-v">Very Tired / Best</span></div>
+      </div>
+      <p class="note">课表关联：运动类型、距离、时长三项匹配。活动详情与分圈数据完整；恢复数据不可用（当前恢复值无法对应报告日期），按未知处理。课表仅返回标题、距离、时长与负荷，不含配速或心率步骤。</p>
+    </section>
+
+    <section id="structure">
+      <p class="sec-label">STRUCTURE 结构与图表</p>
+      <h2>22 个分圈还原成三段节奏 + 两次慢跑恢复</h2>
+      <p>20 个有效公里是节奏段，2 个碎圈是慢跑恢复。按配速台阶与恢复段的明显降速，结构可以干净地切出来。</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>段落</th><th class="mono">距离</th><th class="mono">用时</th><th class="mono">平均配速</th><th class="mono">平均心率</th><th>说明</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2K 节奏</td><td class="mono">2.00 km</td><td class="mono">7:55</td><td class="mono">3:58 /km</td><td class="mono">≈158 bpm</td><td>课表第一段，三段中最快</td></tr>
+            <tr><td>慢跑恢复</td><td class="mono">0.24 km</td><td class="mono">3:06</td><td class="mono">12:39 /km</td><td class="mono">125 bpm</td><td>配速台阶清晰</td></tr>
+            <tr><td>8K 节奏</td><td class="mono">8.00 km</td><td class="mono">32:29</td><td class="mono">4:04 /km</td><td class="mono">≈170 bpm</td><td>段内最稳</td></tr>
+            <tr><td>慢跑恢复</td><td class="mono">0.38 km</td><td class="mono">6:01</td><td class="mono">15:41 /km</td><td class="mono">135 bpm</td><td>第二次恢复</td></tr>
+            <tr><td>10K 节奏</td><td class="mono">10.00 km</td><td class="mono">41:50</td><td class="mono">4:11 /km</td><td class="mono">≈176 bpm</td><td>代价最高的一段</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caption">三段节奏合计约 20.00 km / 82:14；加上两次慢跑恢复后为 20.63 km / 1:31:21，与活动总量一致。段内平均心率为该段各公里均值的再平均，属本报告计算值。</p>
+
+      <div class="chart">
+        <svg viewBox="0 0 1000 300" role="img" aria-label="逐公里配速与心率折线图">
+          <defs>
+            <marker id="dotG" markerWidth="6" markerHeight="6" refX="3" refY="3"><circle cx="3" cy="3" r="2.3" fill="#56FFA3"/></marker>
+            <marker id="dotW" markerWidth="6" markerHeight="6" refX="3" refY="3"><circle cx="3" cy="3" r="2.3" fill="#F2F6F3"/></marker>
+          </defs>
+          <g stroke="rgba(242,246,243,0.08)" stroke-width="1">
+            <line x1="70" y1="80" x2="970" y2="80"/>
+            <line x1="70" y1="130" x2="970" y2="130"/>
+            <line x1="70" y1="180" x2="970" y2="180"/>
+            <line x1="70" y1="230" x2="970" y2="230"/>
+          </g>
+          <g font-family="monospace" font-size="14" fill="rgba(242,246,243,0.42)" text-anchor="end">
+            <text x="62" y="85">4:00</text>
+            <text x="62" y="135">4:05</text>
+            <text x="62" y="185">4:10</text>
+            <text x="62" y="235">4:15</text>
+          </g>
+          <g font-family="monospace" font-size="14" fill="rgba(86,255,163,0.55)" text-anchor="start">
+            <text x="978" y="78">180</text>
+            <text x="978" y="134">170</text>
+            <text x="978" y="189">160</text>
+            <text x="978" y="245">150</text>
+          </g>
+          <g stroke="rgba(86,255,163,0.32)" stroke-width="1" stroke-dasharray="4 6">
+            <line x1="141" y1="40" x2="141" y2="240"/>
+            <line x1="520" y1="40" x2="520" y2="240"/>
+          </g>
+          <g>
+            <line x1="70" y1="22" x2="100" y2="22" stroke="#56FFA3" stroke-width="2.5"/>
+            <text x="108" y="27" font-size="14" fill="rgba(242,246,243,0.42)">心率 bpm</text>
+            <line x1="196" y1="22" x2="226" y2="22" stroke="#F2F6F3" stroke-width="2.5"/>
+            <text x="234" y="27" font-size="14" fill="rgba(242,246,243,0.42)">配速 min/km</text>
+          </g>
+          <polyline fill="none" stroke="#F2F6F3" stroke-width="2.4" stroke-linejoin="round"
+            marker-start="url(#dotW)" marker-mid="url(#dotW)" marker-end="url(#dotW)"
+            points="70,59 117.4,52.9 164.7,117.2 212.1,125.1 259.5,125.1 306.8,130 354.2,107.6 401.6,105.4 448.9,117.3 496.3,101.8 543.7,183.2 591.1,201.1 638.4,191.8 685.8,217.2 733.2,202.2 780.5,220.3 827.9,202.5 875.3,198 922.6,169.7 970,107.9"/>
+          <polyline fill="none" stroke="#56FFA3" stroke-width="2.4" stroke-linejoin="round" opacity="0.95"
+            marker-start="url(#dotG)" marker-mid="url(#dotG)" marker-end="url(#dotG)"
+            points="70,234.4 117.4,162.2 164.7,234.4 212.1,162.2 259.5,145.6 306.8,123.3 354.2,112.2 401.6,95.6 448.9,90 496.3,78.9 543.7,173.3 591.1,117.8 638.4,106.7 685.8,101.1 733.2,106.7 780.5,90 827.9,84.4 875.3,73.3 922.6,62.2 970,51.1"/>
+          <g font-size="14" fill="rgba(242,246,243,0.72)" text-anchor="middle">
+            <text x="94" y="278">2K 节奏 2.00 km</text>
+            <text x="330" y="278">8K 节奏 8.00 km</text>
+            <text x="757" y="278">10K 节奏 10.00 km</text>
+          </g>
+        </svg>
+        <p class="caption">只绘制 20 个有效公里；两处绿色虚线是慢跑恢复段（0.24 km / 0.38 km），其配速 12:39 /km 与 15:41 /km 会压扁纵轴，因此不进入折线。纵轴：左为配速，右为心率。</p>
+      </div>
+
+      <h3>同段前后对比（计算值）</h3>
+      <p>取每段前 3 个完整公里与后 3 个完整公里比较，恢复圈本身不参与。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>比较对象</th><th class="mono">平均配速</th><th class="mono">平均心率</th></tr></thead>
+          <tbody>
+            <tr><td>8K 段 前 3 km</td><td class="mono">4:04.2 /km</td><td class="mono">161 bpm</td></tr>
+            <tr><td>8K 段 后 3 km</td><td class="mono">4:02.8 /km</td><td class="mono">177 bpm</td></tr>
+            <tr><td>10K 段 前 3 km</td><td class="mono">4:11.2 /km</td><td class="mono">169 bpm</td></tr>
+            <tr><td>10K 段 后 3 km</td><td class="mono">4:07.9 /km</td><td class="mono">182 bpm</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>两段的走向一致：配速基本持平甚至略快，心率明显更高（8K 段 +16 bpm，10K 段 +13 bpm）。这支持「同等输出下心率抬升」的描述，但不足以说明原因，也不等于过度训练或脱水。两段的前 3 km 都紧接慢跑恢复，心率仍在上行；即使剔除恢复后的第一个公里，两段后段心率仍分别高约 12 bpm 和 9 bpm，方向不变，幅度不宜精确解读。</p>
+      <p>动作结果侧：触地时间从首公里的 166 ms 逐步升到 173–176 ms；全程平均步频 191 spm、平均步幅 1.18 m，分圈层面没有步频与步幅数据，因此不做动作层面的结论。设备记录的爬升数值很小（17 m / 23 m）；路线类型、风况与路面信息未知，本报告不把它们算进配速波动的解释。</p>
+    </section>
+
+    <section id="evidence">
+      <p class="sec-label">EVIDENCE 证据</p>
+      <div class="ev">
+        <div>
+          <h3>强项</h3>
+          <ul class="plain">
+            <li><span class="num">01</span>三段距离 2.00 / 8.00 / 10.00 km，与课表「2K+8K+10K 节奏」的距离和顺序一致，两次慢跑恢复都在，没有结构中断。</li>
+            <li><span class="num">02</span>8K 段每公里落在 4:02–4:05，段内极差 2.8 s/km（计算值），输出稳定，没有前快后崩。</li>
+            <li><span class="num">03</span>10K 段最后 3 km 比本段前 3 km 快约 3.4 s/km，收尾没有掉速，最后一公里 4:03 是该段最快的一公里。</li>
+          </ul>
+        </div>
+        <div>
+          <h3>当前关注</h3>
+          <ul class="plain">
+            <li><span class="num">A</span><strong>主关注 · 后段生理代价上升。</strong>10K 段平均 4:11 /km，比 8K 段慢约 7 s/km，段内平均心率高约 6 bpm。支持证据：逐段配速与心率同向变化，两段内部也都出现「配速持平、心率更高」。反证与未知：环境、补给、睡眠、疲劳累积与测量误差都没有数据，无法排序。置信度：中。</li>
+            <li><span class="num">B</span><strong>备选线索 · 实际负荷高于课表预估。</strong>本次训练负荷 409 TL，课表预估 245 TL，比值约 1.7（计算值）。支持：两个数值来自同一套负荷字段。未知：两者是否采用完全相同的计算口径，单次数据无法验证。置信度：低。</li>
+          </ul>
+          <p class="note">第一段 2K 均配 3:58 /km，是三段中最快的一段，也是课表本身的第一段安排，不按执行失误处理；它是否影响后两段的代价，现有数据无法区分。记录中的体感标记为 Very Tired，与后段心率抬升同时出现，但这个同时出现本身不能说明原因。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="load">
+      <p class="sec-label">LOAD 近期负荷</p>
+      <div class="load-row">
+        <div class="load-item"><span class="load-k">短期负荷</span><span class="load-v mono">194</span></div>
+        <div class="load-item"><span class="load-k">长期负荷</span><span class="load-v mono">151</span></div>
+        <div class="load-item"><span class="load-k">负荷比</span><span class="load-v mono">1.28</span></div>
+      </div>
+      <p class="plain-line"><span class="dot"></span><span class="g">状态 Optimized</span></p>
+      <p class="plain-line"><span class="dot"></span><span class="m">恢复估计：本日数据不可用</span></p>
+      <p class="note">短期负荷、长期负荷与负荷比来自同一负荷行；单次训练负荷 409 TL 与之量级不同，本报告不做合并计算。本次未获得可对应报告日期的恢复数据，缺失按未知处理，不按 0 处理。以上均为设备模型值，不是医学结论。</p>
+      <h3>能力评估</h3>
+      <p>以下为设备模型估计，不由单次活动改写，也不作为长期能力的证明。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>指标</th><th class="mono">数值</th><th>口径</th></tr></thead>
+          <tbody>
+            <tr><td>最大摄氧量估计</td><td class="mono">59</td><td>设备模型</td></tr>
+            <tr><td>马拉松预测</td><td class="mono">3:01:58</td><td>设备模型估计，非承诺</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tomorrow">
+      <p class="sec-label">TOMORROW 明日课表</p>
+      <h2>明日课表：<span class="plan-name">1H有氧跑</span></h2>
+      <p class="mono" style="color:rgba(242,246,243,.78);font-size:15px">11.65 km · 1:00:00 · 95 TL</p>
+      <p>课表只返回标题、距离、时长和负荷，没有配速或心率区间，具体以手表同步课表为准。执行方向：有氧进入、全程均匀、不追加额外强度。</p>
+      <p class="note">今日课表：2K+8K+10K 节奏 · 20.00 km · 1:27:33 · 245 TL，与本次活动匹配。</p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <span>DATA · COROS MCP · 2026-09-24</span>
+    <span>Ayu Running</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- 导航滚动高亮 ---------- */
+  var links = Array.prototype.slice.call(document.querySelectorAll('.tabs a'));
+  var secs = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+
+  function setActive(idx){
+    links.forEach(function(a, i){
+      var on = (i === idx);
+      a.classList.toggle('active', on);
+      if (on) { a.setAttribute('aria-current', 'true'); } else { a.removeAttribute('aria-current'); }
+    });
+  }
+  function onScroll(){
+    var probe = window.scrollY + 190;
+    var idx = 0;
+    secs.forEach(function(s, i){ if (s && s.offsetTop <= probe) { idx = i; } });
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+      idx = secs.length - 1;
+    }
+    setActive(idx);
+  }
+  links.forEach(function(a, i){
+    a.addEventListener('click', function(){ setActive(i); });
+  });
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  /* ---------- PNG 导出 ---------- */
+  var W = 1240, MIN_H = 1754, SCALE = 2, PAD = 80, CW = W - PAD * 2;
+  var COL = {
+    green: '#56FFA3',
+    text: '#F2F6F3',
+    t70: 'rgba(242,246,243,0.70)',
+    t42: 'rgba(242,246,243,0.42)',
+    line: 'rgba(242,246,243,0.10)'
+  };
+  function F(size, weight){ return (weight || 400) + ' ' + size + 'px "Microsoft YaHei","PingFang SC","Hiragino Sans GB",sans-serif'; }
+  function FM(size, weight){ return (weight || 400) + ' ' + size + 'px "SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace'; }
+
+  var mcanvas = document.createElement('canvas');
+  var mctx = mcanvas.getContext('2d');
+
+  function wrapText(text, font, maxW){
+    mctx.font = font;
+    var tokens = text.match(/[A-Za-z0-9][A-Za-z0-9:.\/\-+%]*|\s+|[\s\S]/g) || [];
+    var lines = [], cur = '';
+    for (var i = 0; i < tokens.length; i++){
+      var tk = tokens[i];
+      var cand = cur + tk;
+      if (cur && mctx.measureText(cand).width > maxW){
+        lines.push(cur.replace(/\s+$/, ''));
+        cur = /^\s+$/.test(tk) ? '' : tk.replace(/^\s+/, '');
+      } else {
+        cur = cand;
+      }
+    }
+    if (cur.trim()) { lines.push(cur.replace(/\s+$/, '')); }
+    return lines.length ? lines : [''];
+  }
+
+  var items = [];
+  function addText(text, font, color, lh, mt){
+    var lines = wrapText(text, font, CW);
+    items.push({ kind: 't', lines: lines, font: font, color: color, lh: lh, mt: mt || 0, h: lines.length * lh });
+  }
+  function addSpace(h){ items.push({ kind: 's', h: h, mt: 0 }); }
+  function addRule(){ items.push({ kind: 'r', h: 1, mt: 0 }); }
+  function addCustom(h, draw){ items.push({ kind: 'c', h: h, draw: draw, mt: 0 }); }
+
+  function buildItems(){
+    items = [];
+
+    /* 品牌行 */
+    addCustom(46, function(g, x, y){
+      g.textBaseline = 'middle';
+      var cy = y + 23;
+      g.font = F(32, 700);
+      g.fillStyle = COL.green;
+      g.fillText('Ayu', x, cy);
+      var w = g.measureText('Ayu').width;
+      g.fillStyle = '#FFFFFF';
+      g.fillText('Running', x + w + 12, cy);
+      g.font = FM(22);
+      g.fillStyle = COL.t42;
+      g.textAlign = 'right';
+      g.fillText('2026-09-24 · Asia/Shanghai', W - PAD, cy);
+      g.textAlign = 'left';
+    });
+    addSpace(38);
+    addRule();
+    addSpace(46);
+
+    /* 今日结论 */
+    addText('TODAY 今日结论', FM(22), COL.green, 26, 0);
+    addSpace(18);
+    addText('三段节奏按距离完成，末段代价上升', F(54, 700), COL.text, 72, 0);
+    addSpace(20);
+    addText('课表 2K+8K+10K 节奏（20.00 km · 1:27:33 · 245 TL）三段均按距离完成；实际 20.63 km / 1:31:21，比课表预估用时多约 3:48。', F(25), COL.t70, 40, 0);
+    addSpace(34);
+
+    addCustom(94, function(g, x, y){
+      g.textBaseline = 'middle';
+      g.fillStyle = COL.text;
+      g.font = FM(40, 600);
+      g.fillText('20.63 km    1:31:21    4:26 /km', x, y + 28);
+      g.fillStyle = COL.t42;
+      g.font = FM(24);
+      g.fillText('平均心率 168 bpm · 最高 185 bpm · 步频 191 spm · 训练负荷 409 TL', x, y + 72);
+
+      g.textAlign = 'right';
+      g.font = FM(20, 600);
+      g.fillStyle = COL.green;
+      g.fillText('/ 100', W - PAD, y + 34);
+      var wd = g.measureText('/ 100').width;
+      g.font = FM(40, 700);
+      g.fillStyle = COL.text;
+      g.fillText('84', W - PAD - wd - 8, y + 28);
+      g.font = F(18);
+      g.fillStyle = COL.t42;
+      g.fillText('执行完成度（本报告计算值）', W - PAD, y + 72);
+      g.textAlign = 'left';
+    });
+    addSpace(18);
+
+    addCustom(34, function(g, x, y){
+      g.textBaseline = 'middle';
+      var cy = y + 17;
+      g.fillStyle = COL.green;
+      g.beginPath();
+      g.arc(x + 4, cy, 5, 0, Math.PI * 2);
+      g.fill();
+      g.font = F(25);
+      g.fillStyle = COL.text;
+      g.fillText('三段完成', x + 22, cy);
+      var w1 = g.measureText('三段完成').width;
+      g.fillStyle = COL.t42;
+      g.fillText(' · ', x + 22 + w1, cy);
+      var w2 = g.measureText(' · ').width;
+      g.fillStyle = COL.green;
+      g.fillText('阈值节奏', x + 22 + w1 + w2, cy);
+    });
+
+    /* 证据 */
+    addSpace(46);
+    addRule();
+    addSpace(46);
+    addText('EVIDENCE 关键证据', FM(22), COL.green, 26, 0);
+    addSpace(20);
+    addText('强项', F(22, 600), COL.t70, 26, 0);
+    addSpace(14);
+    addText('01  三段距离 2.00 / 8.00 / 10.00 km，与课表 2K+8K+10K 的距离和顺序一致，两次慢跑恢复都在。', F(25), COL.text, 40, 0);
+    addSpace(12);
+    addText('02  8K 段每公里 4:02–4:05，段内极差 2.8 s/km（计算值），没有前快后崩。', F(25), COL.text, 40, 0);
+    addSpace(12);
+    addText('03  10K 段最后 3 km 比本段前 3 km 快约 3.4 s/km，收尾没有掉速。', F(25), COL.text, 40, 0);
+    addSpace(30);
+    addText('当前关注', F(22, 600), COL.t70, 26, 0);
+    addSpace(14);
+    addText('10K 段平均 4:11 /km，比 8K 段慢约 7 s/km，段内平均心率高约 6 bpm（段内均值，计算值）。恢复、环境与补给数据缺失，原因无法排序。', F(25), COL.text, 40, 0);
+
+    /* 负荷与恢复 */
+    addSpace(46);
+    addRule();
+    addSpace(46);
+    addText('LOAD 近期负荷', FM(22), COL.green, 26, 0);
+    addSpace(20);
+    addCustom(48, function(g, x, y){
+      g.textBaseline = 'middle';
+      var cy = y + 24;
+      var parts = [['短期负荷', '194'], ['长期负荷', '151'], ['负荷比', '1.28']];
+      var cx = x;
+      parts.forEach(function(p){
+        g.font = FM(21);
+        g.fillStyle = COL.t42;
+        g.fillText(p[0], cx, cy);
+        cx += g.measureText(p[0]).width + 12;
+        g.font = FM(34, 700);
+        g.fillStyle = COL.text;
+        g.fillText(p[1], cx, cy);
+        cx += g.measureText(p[1]).width + 44;
+      });
+    });
+    addSpace(24);
+    addCustom(32, function(g, x, y){
+      g.textBaseline = 'middle';
+      var cy = y + 16;
+      g.fillStyle = COL.green;
+      g.beginPath();
+      g.arc(x + 4, cy, 4.5, 0, Math.PI * 2);
+      g.fill();
+      g.font = F(24);
+      g.fillStyle = COL.green;
+      g.fillText('状态 Optimized', x + 20, cy);
+    });
+    addSpace(10);
+    addCustom(32, function(g, x, y){
+      g.textBaseline = 'middle';
+      var cy = y + 16;
+      g.fillStyle = COL.green;
+      g.beginPath();
+      g.arc(x + 4, cy, 4.5, 0, Math.PI * 2);
+      g.fill();
+      g.font = F(24);
+      g.fillStyle = COL.t70;
+      g.fillText('恢复估计：本日数据不可用', x + 20, cy);
+    });
+    addSpace(20);
+    addText('本次未获得可对应报告日期的恢复数据，缺失按未知处理；单次训练负荷 409 TL 与短期/长期负荷口径不同，不做合并计算。', F(22), COL.t42, 34, 0);
+
+    /* 明日课表 */
+    addSpace(46);
+    addRule();
+    addSpace(46);
+    addText('TOMORROW 明日课表', FM(22), COL.green, 26, 0);
+    addSpace(20);
+    addCustom(44, function(g, x, y){
+      g.textBaseline = 'middle';
+      var cy = y + 22;
+      g.font = F(34, 700);
+      g.fillStyle = COL.text;
+      g.fillText('明日课表：', x, cy);
+      var w = g.measureText('明日课表：').width;
+      g.fillStyle = COL.green;
+      g.fillText('1H有氧跑', x + w + 6, cy);
+    });
+    addSpace(18);
+    addText('11.65 km · 1:00:00 · 95 TL', FM(26), COL.t70, 34, 0);
+    addSpace(16);
+    addText('课表未提供配速与心率区间，以手表同步课表为准。方向：有氧进入、全程均匀、不追加额外强度。', F(24), COL.t70, 38, 0);
+    addSpace(56);
+    addRule();
+  }
+
+  function drawPNG(){
+    var total = 0;
+    items.forEach(function(it){ total += (it.mt || 0) + it.h; });
+    var TOP = 100, BOTTOM = 96;
+    var h = Math.max(MIN_H, Math.ceil(TOP + total + BOTTOM));
+
+    var cvs = document.createElement('canvas');
+    cvs.width = W * SCALE;
+    cvs.height = h * SCALE;
+    var g = cvs.getContext('2d');
+    g.scale(SCALE, SCALE);
+
+    g.fillStyle = '#080B09';
+    g.fillRect(0, 0, W, h);
+
+    g.strokeStyle = 'rgba(86,255,163,0.045)';
+    g.lineWidth = 1;
+    for (var gx = 0; gx <= W; gx += 90){
+      g.beginPath(); g.moveTo(gx + 0.5, 0); g.lineTo(gx + 0.5, h); g.stroke();
+    }
+    for (var gy = 0; gy <= h; gy += 90){
+      g.beginPath(); g.moveTo(0, gy + 0.5); g.lineTo(W, gy + 0.5); g.stroke();
+    }
+
+    var rad = g.createRadialGradient(W / 2, -140, 0, W / 2, -140, 900);
+    rad.addColorStop(0, 'rgba(86,255,163,0.10)');
+    rad.addColorStop(1, 'rgba(86,255,163,0)');
+    g.fillStyle = rad;
+    g.fillRect(0, 0, W, 700);
+
+    var y = TOP;
+    items.forEach(function(it){
+      y += it.mt || 0;
+      if (it.kind === 't'){
+        g.font = it.font;
+        g.fillStyle = it.color;
+        g.textBaseline = 'middle';
+        for (var i = 0; i < it.lines.length; i++){
+          g.fillText(it.lines[i], PAD, y + it.lh * (i + 0.5));
+        }
+        y += it.h;
+      } else if (it.kind === 's'){
+        y += it.h;
+      } else if (it.kind === 'r'){
+        g.strokeStyle = COL.line;
+        g.lineWidth = 1;
+        g.beginPath();
+        g.moveTo(PAD, y + 0.5);
+        g.lineTo(W - PAD, y + 0.5);
+        g.stroke();
+        y += 1;
+      } else if (it.kind === 'c'){
+        it.draw(g, PAD, y);
+        y += it.h;
+      }
+    });
+
+    var name = 'Ayu_Running_2026-09-24.png';
+    cvs.toBlob(function(blob){
+      if (!blob) { return; }
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+    }, 'image/png');
+  }
+
+  var btn = document.getElementById('btn-png');
+  btn.addEventListener('click', function(){
+    var old = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '生成中…';
+    var ready = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+    ready.then(function(){
+      try {
+        buildItems();
+        drawPNG();
+      } finally {
+        btn.disabled = false;
+        btn.textContent = old;
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
