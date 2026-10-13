@@ -84,7 +84,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Enable corepack
         run: npm install -g corepack@latest && corepack enable pnpm
 
@@ -114,6 +114,7 @@ jobs:
       - name: Build
         env:
           REPO_NAME: ${{ github.event.repository.name }}
+          VITE_MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
           VITE_AYU_REPORT_TRIGGER_URL: ${{ vars.VITE_AYU_REPORT_TRIGGER_URL }}
         run: PATH_PREFIX=/$REPO_NAME pnpm build
 

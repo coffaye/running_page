@@ -29,6 +29,7 @@ route.svg
 
 # Codex/browser and local report-generation artifacts
 .playwright-cli/
+/output/
 PNG_OUT/
 TCX_OUT/
 *.tmp

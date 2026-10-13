@@ -28,7 +28,8 @@ class YearSummaryDrawer(TracksDrawer):
 
     def fetch_args(self, args):
         if args.type == "year_summary":
-            self.year = args.summary_year or datetime.datetime.now().year
+            now_year = datetime.datetime.now().year  # noqa: DTZ005
+            self.year = args.summary_year or now_year
 
     def draw(self, dr: svgwrite.Drawing, size: XY, offset: XY):
         """Draw the year summary poster"""
@@ -54,7 +55,7 @@ class YearSummaryDrawer(TracksDrawer):
         # Draw "Running for X Days" header - align with top of dots (offset.y + 8)
         first_run_date = self._get_first_run_date()
         if first_run_date:
-            days_ago = (datetime.datetime.now() - first_run_date).days
+            days_ago = (datetime.datetime.now() - first_run_date).days  # noqa: DTZ005
             header_text = f"Running for {days_ago} Days"
         else:
             header_text = f"Year {self.year}"
@@ -143,7 +144,7 @@ class YearSummaryDrawer(TracksDrawer):
 
         # Stats with separate value and unit for better layout
         stat_items = [
-            ("Distance", f"{int(stats['total_distance'])}", "km"),
+            ("Distance", f"{int(stats['total_distance'])}", self.poster.u()),
             ("Runs", f"{stats['total_runs']}", ""),
             ("Avg Pace", stats["avg_pace"], ""),
             ("Streak", f"{stats['streak']}", "d"),
@@ -265,8 +266,7 @@ class YearSummaryDrawer(TracksDrawer):
         for t in tracks:
             dist_km = t.length / 1000
             # Track longest run
-            if t.length > longest_run_m:
-                longest_run_m = t.length
+            longest_run_m = max(longest_run_m, t.length)
 
             # Count race distances
             if dist_km >= 42.0:
@@ -289,15 +289,15 @@ class YearSummaryDrawer(TracksDrawer):
                 ):
                     total_time_s += (t.end_time - t.start_time).total_seconds()
 
-        stats["total_distance"] = total_distance_m / 1000
+        stats["total_distance"] = self.poster.m2u(total_distance_m)
         stats["total_time"] = total_time_s
-        stats["longest_run"] = longest_run_m / 1000
+        stats["longest_run"] = self.poster.m2u(longest_run_m)
 
-        # Calculate average pace (min/km)
+        # Calculate average pace (min per Unit)
         if total_distance_m > 0 and total_time_s > 0:
-            pace_s_per_km = total_time_s / (total_distance_m / 1000)
-            pace_min = int(pace_s_per_km // 60)
-            pace_sec = int(pace_s_per_km % 60)
+            pace_s_per_unit = total_time_s / self.poster.m2u(total_distance_m)
+            pace_min = int(pace_s_per_unit // 60)
+            pace_sec = int(pace_s_per_unit % 60)
             stats["avg_pace"] = f"{pace_min}'{pace_sec:02d}\""
 
         # Calculate streak (consecutive days)
@@ -311,7 +311,7 @@ class YearSummaryDrawer(TracksDrawer):
             return 0
 
         # Get unique dates
-        dates = sorted(set(t.start_time_local.date() for t in tracks))
+        dates = sorted({t.start_time_local.date() for t in tracks})
         if not dates:
             return 0
 
@@ -351,7 +351,7 @@ class YearSummaryDrawer(TracksDrawer):
         for t in tracks:
             month = t.start_time_local.month
             day = t.start_time_local.day
-            month_data[month][day] += t.length / 1000  # km
+            month_data[month][day] += self.poster.m2u(t.length)
 
         # Grid parameters - 12 columns (months), 31 rows (days)
         cols = 12  # months
@@ -402,7 +402,7 @@ class YearSummaryDrawer(TracksDrawer):
                 circle = dr.circle(center=(cx, cy), r=radius, fill=color)
                 title = f"{self.year}-{month:02d}-{day:02d}"
                 if dist > 0:
-                    title += f": {int(dist) if dist >= 1 else round(dist, 1)} km"
+                    title += f": {int(dist) if dist >= 1 else round(dist, 1)} {self.poster.u()}"
                 circle.set_desc(title=title)
                 dr.add(circle)
 

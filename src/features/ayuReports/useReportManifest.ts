@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { fetchReportManifest } from './manifest.ts';
 import type { ReportEntry } from './types.ts';
 
@@ -8,7 +8,6 @@ interface ReportManifestState {
 }
 
 export const useReportManifest = (): ReportManifestState => {
-  const timestampRef = useRef(Date.now());
   const [reports, setReports] = useState<Map<string, ReportEntry>>(
     () => new Map()
   );
@@ -17,7 +16,7 @@ export const useReportManifest = (): ReportManifestState => {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchReportManifest(timestampRef.current, controller.signal)
+    fetchReportManifest(Date.now(), controller.signal)
       .then((manifest) => {
         setReports(new Map(Object.entries(manifest.reports)));
         setStatus(Object.keys(manifest.reports).length ? 'ready' : 'empty');
