@@ -16,7 +16,7 @@ entry URL and historical reports are retained.
 | Dark-mode cyan selected route | config.yml selected_route_color: #00ffff |
 | Readable light-mode accent | config.yml accent_text_color_light: #b62c72 |
 | Ayu avatar and site title | config.yml avatar, index.html and site metadata |
-| Mapbox configuration | Old configuration retained in backup; Dashboard uses its supported free map fallback until MAPBOX_TOKEN is configured in Actions |
+| Mapbox configuration | Old configuration retained in backup; Dashboard uses token-free MapLibre/CARTO, while Classic retains optional Mapbox support |
 | View/generate daily report, mutually exclusive menus | Existing src/features/ayuReports, reused in both activity tables |
 | COROS download retries and optional reverse geocoding | Existing COROS sync and generator behavior retained during merge |
 
