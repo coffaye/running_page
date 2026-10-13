@@ -28,7 +28,10 @@ yellow. Normal body text retains the upstream neutral colors for readability.
 
 No Mapbox credential was uploaded or added to the new source. A future
 explicitly authorized MAPBOX_TOKEN can be injected through the existing
-GitHub Actions VITE_MAPBOX_TOKEN build environment.
+GitHub Actions VITE_MAPBOX_TOKEN build environment for Classic. Dashboard
+uses MapLibre with the CARTO basemap: the upstream Mapbox GL fallback still
+required a token and requested unsupported fonts. Routes, selection, zoom,
+fullscreen and theme changes retain the same behavior without credentials.
 
 config.yml can switch theme_preset between dashboard and classic. The
 default goal values are upstream defaults and remain editable in that file.
