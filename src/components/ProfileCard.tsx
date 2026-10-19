@@ -1,12 +1,9 @@
 import { memo } from 'react';
 import type { Activity, SportFilter } from '../types';
 import { useLocale } from '../hooks/useLocale';
-import {
-  formatDistance,
-  parseMovingTime,
-  extractProvince,
-} from '../hooks/useActivities';
+import { formatDistance, parseMovingTime } from '../hooks/useActivities';
 import { AVATAR } from '../config';
+import { getActivityLocation } from '../core/activityLocation.ts';
 
 interface ProfileCardProps {
   activities: Activity[];
@@ -36,30 +33,13 @@ export const ProfileCard = memo(function ProfileCard({
   const yearsActive =
     allDates.length > 0 ? Math.max(...allDates) - Math.min(...allDates) + 1 : 0;
 
-  // Countries and provinces — use shared extractProvince for consistency with ChinaMap
+  // Shared offline resolution keeps profile totals and the footprint map aligned.
   const countries = new Set<string>();
   const provinces = new Set<string>();
   for (const a of activities) {
-    const loc = a.location_country;
-    if (!loc || loc === 'None') continue;
-    // Detect country
-    if (loc.startsWith('{')) {
-      try {
-        const d = JSON.parse(loc.replace(/'/g, '"').replace(/None/g, 'null'));
-        if (d.country) countries.add(d.country);
-      } catch {
-        /* ignore */
-      }
-    } else if (loc.includes('泰国')) {
-      countries.add('泰国');
-    } else if (loc.includes('日本')) {
-      countries.add('日本');
-    } else {
-      countries.add('中国');
-    }
-    // Province — use shared logic (China-only)
-    const p = extractProvince(loc);
-    if (p) provinces.add(p);
+    const { country, province } = getActivityLocation(a);
+    if (country) countries.add(country);
+    if (province) provinces.add(province);
   }
 
   const formatHours = (secs: number) => `${(secs / 3600).toFixed(1)}h`;

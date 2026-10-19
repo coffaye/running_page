@@ -12,7 +12,6 @@ import type { Activity } from '@/types';
 import {
   useFilteredActivities,
   getAvailableYears,
-  extractProvince,
   getActivityData,
 } from '@/hooks/useActivities';
 import { useTheme } from '@/hooks/useTheme';
@@ -26,6 +25,7 @@ import { CalendarWidget } from '@/components/CalendarWidget';
 import { ProfileCard } from '@/components/ProfileCard';
 import { PersonalBest } from '@/components/PersonalBest';
 import { ChinaMap } from '@/components/ChinaMap';
+import { getActivityLocation } from '@/core/activityLocation.ts';
 
 const TracksPage = lazy(() =>
   import('@/components/TracksPage').then((module) => ({
@@ -92,7 +92,7 @@ function Dashboard() {
   const provinceFiltered = useMemo(() => {
     if (!selectedProvince) return filtered;
     return filtered.filter(
-      (a) => extractProvince(a.location_country) === selectedProvince
+      (a) => getActivityLocation(a).province === selectedProvince
     );
   }, [filtered, selectedProvince]);
 

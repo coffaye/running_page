@@ -1,7 +1,7 @@
 import { memo, useEffect, useMemo, useState } from 'react';
 import type { Activity, SportFilter } from '../types';
 import { useLocale } from '../hooks/useLocale';
-import { extractProvince } from '../hooks/useActivities';
+import { getActivityLocation } from '../core/activityLocation.ts';
 
 interface ChinaMapProps {
   activities: Activity[];
@@ -73,7 +73,11 @@ export const ChinaMap = memo(function ChinaMap({
   // Lazy-load GeoJSON to keep initial bundle small
   useEffect(() => {
     import('../assets/china-provinces.json').then((mod) => {
-      setFeatures((mod.default as { features: GeoFeature[] }).features);
+      setFeatures(
+        (mod.default as { features: GeoFeature[] }).features.filter((feature) =>
+          feature.properties.name.trim()
+        )
+      );
     });
   }, []);
 
@@ -90,7 +94,7 @@ export const ChinaMap = memo(function ChinaMap({
   const provinceCount = useMemo(() => {
     const map = new Map<string, number>();
     for (const a of activities) {
-      const p = extractProvince(a.location_country);
+      const p = getActivityLocation(a).province;
       if (p) map.set(p, (map.get(p) ?? 0) + 1);
     }
     return map;
@@ -147,7 +151,7 @@ export const ChinaMap = memo(function ChinaMap({
                 {visitedCount}
               </span>
               <span>
-                / {features.length || 35}{' '}
+                / {features.length || 34}{' '}
                 {locale === 'zh' ? '省份' : 'provinces'}
               </span>
             </>
