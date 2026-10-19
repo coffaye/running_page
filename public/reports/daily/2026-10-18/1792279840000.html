@@ -364,7 +364,7 @@ footer{max-width:1000px;margin:0 auto;padding:28px 24px 64px;display:flex;justif
     function solo(s, x, top, f, fill, align){
       ctx.font = f; ctx.fillStyle = fill; ctx.textAlign = align || 'left'; ctx.textBaseline = 'top';
       ctx.fillText(s, x, top);
-      return fs(f);
+      return top + fs(f);
     }
 
     function dot(x, y, r, color){
