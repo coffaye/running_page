@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-19T01:43:57Z",
+  "generatedAt": "2026-10-20T03:43:42Z",
   "reports": {
     "1787696516000": {
       "runId": "1787696516000",
@@ -297,6 +297,21 @@
         "kind": "canvas-vertical-cursor",
         "sourceHtmlSha256": "9e1a35fb61cc3f3c54e59755c9fe767a9296e6c82d6d5573a588ffae6e908146"
       }
+    },
+    "1792448491000": {
+      "runId": "1792448491000",
+      "localDate": "2026-10-20",
+      "url": "reports/daily/2026-10-20/1792448491000.html",
+      "generatedAt": "2026-10-20T03:43:42Z",
+      "engineCommit": "a5fe08a30fd5619fa27c1e8aeac82d518caa8bda",
+      "model": "deepseek-flash",
+      "reasoningEffort": "high",
+      "generationMode": "native-skill-agent",
+      "nativeRuntimeVersion": "native-agent-runtime-v1",
+      "nativeSkillSource": "ayu-running-reports:frozen-snapshot:7c23f7c28643bc0d62d84afb2a8a782fb966879e8e8f30658a4944bd57ee2708",
+      "nativeSkillSnapshotSha256": "7c23f7c28643bc0d62d84afb2a8a782fb966879e8e8f30658a4944bd57ee2708",
+      "dataSource": "coros-mcp",
+      "collectorContractVersion": "coros-daily-bundle-v1"
     }
   }
 }
